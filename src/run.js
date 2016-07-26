@@ -10,4 +10,3 @@ var run = new function() {
 
 
 
-var updatePositions = 
