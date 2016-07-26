@@ -1,11 +1,7 @@
-var victim = new funciton() {
+var victim = function(){
 	var ID;
 	var speed;
 	var health;
 	var direction;
-	
-	
 	//properties
-	
-
 };
