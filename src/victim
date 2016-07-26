@@ -4,6 +4,7 @@ var victim = new funciton() {
 	var health;
 	var direction;
 	
+	
 	//properties
 	
 
