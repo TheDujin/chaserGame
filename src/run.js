@@ -11,6 +11,7 @@ var run = function() {
 
 
 //0 is up, 1 is right, 2 is down, 3 is left 
+//test
 var updatePositions = function() {
 	for(var i = 0; i < objectArray.size(); i++) {
 		var direction = objectArray[i].direction;
