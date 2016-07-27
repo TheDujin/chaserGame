@@ -1,9 +1,10 @@
 var ID;
-var speed = 100;
-var health = 100;
-var direction = 0;
-var x = Math.randomInt();
+var speed;
+var health;
+var direction;
+var x;
 var y;
+
 
 function victim(ID){
 	this.ID = ID;
@@ -14,7 +15,5 @@ function victim(ID){
 	this.y = Math.randomInt(9999);
 }
 
-victim.method('setValue', function (value) {
-	
-});
+
 
