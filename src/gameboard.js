@@ -1,9 +1,7 @@
-var Gameboard = function() {
-	//in the gameboard we need a couple things. An array 
-	
-	//var 
-
-};
+//set up the instance of the engine on the page
+var Q = Quintus()
+	.include("Sprites, Scenes, Input")
+	.setup();
 
 
 
