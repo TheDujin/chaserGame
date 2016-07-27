@@ -10,12 +10,29 @@
 
 
 while(1) {
+	updatePositions();
 	// 1. move characters
 	// 2. check for collisions between players
 	// 3. death events
 	
 	
 }
+
+	
+
+document.onkeydown = function(event) {
+	var key_press = String.fromCharCode(event.keyCode);
+	var key_code = event.keyCode;
+	document.getElementById('kp').innerHTML = key_press;
+    document.getElementById('kc').innerHTML = key_code;
+	var status = document.getElementById('status');
+}
+document.onkeyup = function(event){
+    var key_press = String.fromCharCode(event.keyCode);
+	var status = document.getElementById('status');
+	status.innerHTML = "UP Event Fired For : "+key_press;
+}
+
 
 var ID;
 var speed;
@@ -30,32 +47,39 @@ function victim(ID){
 	this.health = 100;
 	this.speed = 100;
 	this.direction = 0;
-	this.x = Math.floor(Math.random() * 9999);
-	this.y = Math.floor(Math.random() * 9999);
+	this.x = Math.floor(Math.random() * 500);
+	this.y = Math.floor(Math.random() * 500);
 }
 
 var players = new Array();
 players[0] = new victim(1234);
-console.log(players[0].ID);
-
 
 function paintPlayers() {
 	for(var i = 0; i < players.length; i++) {
 		//iterates through players and finds their x and y. Paints a circle.
 		//also needs to remove old player locations
 	}
-
 }
 
-
+//obtain keycodes
 //0 is up, 1 is right, 2 is down, 3 is left 
 //finish coding. 
 var updatePositions = function() {
-	for(var i = 0; i < objectArray.size(); i++) {
-		var direction = objectArray[i].direction;
+	for(var i = 0; i < players.size(); i++) {
+		var direction = players[i].direction;
 		switch(direction) {
-			
+			case 0:
+				players[i].y += [i].speed;
+			case 1:
+				players[i].x += players[i].speed; 
+			case 2:
+				players[i].y -= players[i].speed; 
+			case 3:
+				players[i].x -= players[i].speed; 
 		}
+		document.getElementById('xcood').innerHTML = players[i].x;
+		document.getElementById('ycood').innerHTML = players[i].y;
+		
 	}
 }
 
@@ -63,21 +87,6 @@ var collisionCheck = function() {
 	//for 
 }
 
-
-
-document.onkeydown = function(event) {
-	var key_press = String.fromCharCode(event.keyCode);
-	var key_code = event.keyCode;
-	document.getElementById('kp').innerHTML = key_press;
-    document.getElementById('kc').innerHTML = key_code;
-	var status = document.getElementById('status');
-	status.innerHTML = "DOWN Event Fired For : "+key_press;
-}
-document.onkeyup = function(event){
-    var key_press = String.fromCharCode(event.keyCode);
-	var status = document.getElementById('status');
-	status.innerHTML = "UP Event Fired For : "+key_press;
-}
 
 
 
