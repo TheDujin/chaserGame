@@ -4,19 +4,10 @@ var health;
 var direction;
 var x;
 var y;
-var victim = function(){
-	//spawns the victim at a random x
-	var xposition = function(){
-		
-	}
-	//properties
-	
-};
 
-function victim(){
+var victim = function(){
 	
 }
-Parenizor.method('setValue', function (value) {
-    this.value = value;
-    return this;
+victim.method('setValue', function (value) {
+	
 });
