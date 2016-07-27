@@ -1,22 +1,15 @@
 var ID;
-var speed;
-var health;
-var direction;
-var x;
+var speed = 100;
+var health = 100;
+var direction = 0;
+var x = Math.randomInt();
 var y;
-var victim = function(){
-	//spawns the victim at a random x
-	var xposition = function(){
-		
-	}
-	//properties
-	
-};
 
-function victim(){
-	
+function victim(ID){
+	this.ID = ID;
+	this.health = 100;
+	this.speed = 100;
+	this.direction = 0;
+	this.x = Math.randomInt(9999);
+	this.y = Math.randomInt(9999);
 }
-Parenizor.method('setValue', function (value) {
-    this.value = value;
-    return this;
-});
