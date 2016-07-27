@@ -4,8 +4,10 @@ var health;
 var direction;
 var x;
 var y;
+var score;
 
 function victim(ID){
+	this.score = 0;
 	this.ID = ID;
 	this.health = 100;
 	this.speed = 100;
