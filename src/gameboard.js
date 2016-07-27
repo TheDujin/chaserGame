@@ -59,7 +59,7 @@ var updatePositions = function() {
 	for(var i = 0; i < objectArray.size(); i++) {
 		var direction = objectArray[i].direction;
 		switch(direction) {
-		
+			
 		}
 	}
 }
