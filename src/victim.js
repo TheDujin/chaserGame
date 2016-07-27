@@ -13,3 +13,8 @@ function victim(ID){
 	this.x = Math.randomInt(9999);
 	this.y = Math.randomInt(9999);
 }
+
+victim.method('setValue', function (value) {
+	
+});
+
