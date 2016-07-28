@@ -1,38 +1,8 @@
-//set up the instance of the engine on the page
-//var Q = Quintus()
-//	.include("Sprites, Scenes, Input") //what quintus is using
-//	.setup({width: 800, height: 600, ScaleToFit: true}); //the dimensions of the page are 800 pixels wide, 600 pixels high, and they fit the users device
-
-//some method that deals with a new player entering the game
-//calls var newPlayer 1 = new victim('some ID');
-
-//this while loop runs the game!
-
-
-while(1) {
-	updatePositions();
-	// 1. move characters
-	// 2. check for collisions between players
-	// 3. death events
-	
-	
-}
-
-	
-
-document.onkeydown = function(event) {
-	var key_press = String.fromCharCode(event.keyCode);
-	var key_code = event.keyCode;
-	document.getElementById('kp').innerHTML = key_press;
-    document.getElementById('kc').innerHTML = key_code;
-	var status = document.getElementById('status');
-}
-document.onkeyup = function(event){
-    var key_press = String.fromCharCode(event.keyCode);
-	var status = document.getElementById('status');
-	status.innerHTML = "UP Event Fired For : "+key_press;
-}
-
+//THIS IS THE SERVERSIDE CODE
+var rightPressed = false;
+var leftPressed = false;
+var upPressed = false;
+var downPressed = false;
 
 var ID;
 var speed;
@@ -42,17 +12,57 @@ var direction;
 var x;
 var y;
 
+var canvas = document.getElementById("myCanvas");
+
+
 function victim(ID){
 	this.ID = ID;
 	this.health = 100;
 	this.speed = 100;
 	this.direction = 0;
-	this.x = Math.floor(Math.random() * 500);
-	this.y = Math.floor(Math.random() * 500);
+//	this.x = Math.floor(Math.random() * 500);
+	//this.y = Math.floor(Math.random() * 500);
+	this.x = 200;
+	this.y = 200;
 }
 
-var players = new Array();
+//deals with keybaord inputs
+document.addEventListener("keydown", keyDownHandler, false);
+document.addEventListener("keyup", keyUpHandler, false);
+
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+    else if(e.keyCode == 38) {
+    	upPressed = true;
+    }
+    else if(e.keyCode == 4) {
+    	downPressed = true;
+    }
+}
+function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = false;
+    }
+    else if(e.keyCode == 37) {
+        leftPressed = false;
+    }
+    else if(e.keyCode == 38) {
+    	upPressed = false;
+    }
+    else if(e.keyCode == 4) {
+    	downPressed = false;
+    }
+}
+
+var players = []
 players[0] = new victim(1234);
+
+
 
 function paintPlayers() {
 	for(var i = 0; i < players.length; i++) {
@@ -63,30 +73,56 @@ function paintPlayers() {
 
 //obtain keycodes
 //0 is up, 1 is right, 2 is down, 3 is left 
-//finish coding. 
-var updatePositions = function() {
-	for(var i = 0; i < players.size(); i++) {
-		var direction = players[i].direction;
-		switch(direction) {
-			case 0:
-				players[i].y += [i].speed;
-			case 1:
-				players[i].x += players[i].speed; 
-			case 2:
-				players[i].y -= players[i].speed; 
-			case 3:
-				players[i].x -= players[i].speed; 
-		}
-		document.getElementById('xcood').innerHTML = players[i].x;
-		document.getElementById('ycood').innerHTML = players[i].y;
-		
+//finish coding. s
+function updatePositions() {
+	for(var i = 0; i < players.length; i++) {
+	    if(rightPressed && players[0].x < canvas.width ) {
+	        players[0].x += 5;
+	    }
+	    else if(leftPressed && players[0].x > 0) {
+	        players[0].x -= 5;
+	    }
+	    else if(upPressed && players[0].y < canvas.height) {
+	        players[0].y += 5;
+	    }
+	    else if(downPressed && players[0].y > 0) {
+	        players[0].y -= 5;
+	    }
+	} 
+}
+
+function draw() {
+	updatePositions();
+	
+}
+
+function sleep(milliseconds) {
+	  var start = new Date().getTime();
+	  for (var i = 0; i < 1e7; i++) {
+	    if ((new Date().getTime() - start) > milliseconds){
+	      break;
+	    }
+	  }
 	}
+
+var counter = 0;
+
+setInterval(updatePositions(), 100);
+
+/*
+
+while(counter < 100) {
+	console.log("this is being called");
+	console.log(document.getElementById('xcood'))
+	document.getElementById('xcood').innerHTML = counter;
+//	updatePositions();
+	// 1. move characters
+	// 2. check for collisions between players
+	// 3. death events
+	counter++;
+	
 }
 
-var collisionCheck = function() {
-	//for 
-}
-
-
+*/
 
 
