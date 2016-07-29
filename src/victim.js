@@ -13,6 +13,6 @@ function victim(ID){
 	this.health = 1;
 	this.speed = 100;
 	this.direction = 0;
-	this.x = Math.floor(Math.random() * 9999);
-	this.y = Math.floor(Math.random() * 9999);
+	this.x = Math.floor(Math.random() * 50);
+	this.y = Math.floor(Math.random() * 50);
 }
