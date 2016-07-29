@@ -160,7 +160,7 @@ function drawPlayers() {
 	
 	}
 }
-
+d
 //collision checker for both walls + players
 //returns true if there are any collisions
 function checkCollisions(x,y) {
