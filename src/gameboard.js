@@ -12,10 +12,47 @@ var direction;
 var x;
 var y;
 
+
+var players = [];
+players[0] = new victim(1234);
+
+
+var arrayw = 50;
+var arrayh = 50;
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 ctx.fillStyle="#736AFF";
 ctx.fillRect(0,0,600,600);
+
+var arenaarray = new Array(50);
+for(var z = 0; z < 50; z++) {
+	arenaarray[z] = new Array(50);
+}
+for(var q = 0; q < 50; q++) {
+	for(var r = 0; r < 50; r++) {
+		arenaarray[q][r] = 0;
+	}
+}
+
+//draws top border
+for(var z = 0; z < 50; z++) {
+	arenaarray[z][0] = 1;
+}
+//draws right border
+for(var z = 0; z < 50; z++) {
+	arenaarray[49][z] = 1;
+}
+//draws bottom border
+for(var z = 0; z < 50; z++) {
+	arenaarray[z][49] = 1;
+}
+//draws left border
+for(var z = 0; z < 50; z++) {
+	arenaarray[0][z] = 1;
+}
+
+
+
 
 function victim(ID){
 	this.ID = ID;
@@ -61,9 +98,6 @@ function keyUpHandler(e) {
     }
 }
 
-var players = [];
-players[0] = new victim(1234);
-
 
 
 function paintPlayers() {
@@ -79,30 +113,71 @@ function paintPlayers() {
 function updatePositions() {
 	for(var i = 0; i < players.length; i++) {
 	    if(rightPressed && players[0].x < canvas.width ) {
-	        players[0].x += 5;
+	        players[0].x += 2;
 	    }
 	    else if(leftPressed && players[0].x > 0) {
-	        players[0].x -= 5;
+	        players[0].x -= 2;
 	    }
 	    else if(upPressed && players[0].y < canvas.height) {
-	        players[0].y -= 5;
+	        players[0].y -= 2;
 	    }
 	    else if(downPressed && players[0].y > 0) {
-	        players[0].y += 5;
+	        players[0].y += 2;
 	    }
-	    console.log(players[0].x + "  " + players[0].y)
 	} 
 }
+
 //draws the player sprite
 function draw() {
 	updatePositions();
-	for(var j = 0; j < players.length; j++) {
-		document.getElementById("myDiv").style.top = players[j].y + "px";
-		document.getElementById("myDiv").style.left = players[j].x + "px";
-	}
+	//repaints light bleu over everything to redraw
+	ctx.fillStyle = "#6960F5";
+	ctx.fillRect(0,0,600,600);
+	
+	drawArena();
+	//repaints player locations
+	drawPlayers();
+
 	
 }
 
+//draws the arena
+function drawArena() {
+	for(var m = 0; m < arrayw; m++) {
+		for(var n = 0; n < arrayh; n++) {
+			if(arenaarray[m][n] === 1) {
+				console.log("painting" + m + n);
+				ctx.fillStyle = "#CCCCCC";
+				ctx.fillRect(m*12, n*12, m*12+12, n*12+12); 
+			}
+		}
+	}
+}
+
+function drawPlayers() {
+	for(var j = 0; j < players.length; j++) {
+		ctx.beginPath();
+		//document.getElementById("myDiv").style.top = players[j].y + "px";
+		//document.getElementById("myDiv").style.left = players[j].x + "px";
+		//temporary implementation. Delete everything then repaint walls
+		
+		ctx.arc(players[j].x, players[j].y, 6, 0, 2*Math.PI);
+		ctx.fillStyle = "#00FF00";
+		ctx.fill();	
+		ctx.closePath();
+	
+	}
+}
+
+//collision checker for both walls + players
+function checkCollisions() {
+	//checks for square aroudn players
+	for(var i = 0; i < players.length; i++) {
+		//[x1, x2]
+		//[x4, x3]
+		
+	}
+}
 
 //freezes for n milliseconds? Bad???
 function sleep(milliseconds) {
@@ -120,9 +195,6 @@ window.addEventListener("keydown", function(e) {
         e.preventDefault();
     }
 }, false);
-
-
-
 
 /*
 
