@@ -4,14 +4,6 @@ var leftPressed = false;
 var upPressed = false;
 var downPressed = false;
 
-var ID;
-var speed;
-var radius;
-var health;
-var direction;
-var x;
-var y;
-
 
 var players = [];
 players[0] = new victim(1234);
@@ -112,16 +104,16 @@ function paintPlayers() {
 //finish coding. s
 function updatePositions() {
 	for(var i = 0; i < players.length; i++) {
-	    if(rightPressed && players[0].x < canvas.width ) {
+	    if(rightPressed && players[0].x < canvas.width - 18 ) {
 	        players[0].x += 2;
 	    }
-	    else if(leftPressed && players[0].x > 0) {
+	    else if(leftPressed && players[0].x > 18) {
 	        players[0].x -= 2;
 	    }
-	    else if(upPressed && players[0].y < canvas.height) {
+	    else if(upPressed && players[0].y > 18) {
 	        players[0].y -= 2;
 	    }
-	    else if(downPressed && players[0].y > 0) {
+	    else if(downPressed && players[0].y < canvas.height - 18) {
 	        players[0].y += 2;
 	    }
 	} 
@@ -170,14 +162,79 @@ function drawPlayers() {
 }
 
 //collision checker for both walls + players
-function checkCollisions() {
-	//checks for square aroudn players
-	for(var i = 0; i < players.length; i++) {
-		//[x1, x2]
-		//[x4, x3]
-		
+//returns true if there are any collisions
+function checkCollisions(x,y) {
+	exactx = x;
+	exacty = y;
+	x = Math.floor(x/12);
+	y = Math.floor(x/12);
+	//checks for top wall
+	if(arenaarray[x][y-1] === 1) {
+		if(Math.floor(y/12) != Math.floor((y-6)/12)) {
+			return true;
+		}
 	}
+	//checks or right wall
+	else if(arenaarray[x+1][y] === 1) {
+		if(Math.floor(x/12) != Math.floor((x+6)/12)) {
+			return true;
+		}
+	}
+	//checks for bottom wall
+	else if(arenaarray[x][y+1] === 1) {
+		if(Math.floor(y/12) != Math.floor((y+6)/12)) {
+			return true;
+		}
+	}
+	//checks for left wall
+	else if(arenaarray[x-1][y] === 1) {
+		if(Math.floor((x-6)/12) != Math.floor(x/12)) {
+			return true;
+		}
+	}
+	
+	//otherwise, check for corner intersection (because this either means its not 
+	//intersecting or their are only walls in the corners
+	
+	//checks for top left corner
+	else if(arenaarray[x-1][y-1] === 1) {
+		if(distance(exactx, (x-1)*12, exacty, (y-1)*12) < victim.radius) {
+			return true;
+		}
+	}
+	//checks for the top right corner
+	else if(arenaarray[x+1][y-1] === 1) {
+		if(distance(exactx, (x+1)*12, exacty, (y-1)*12) < victim.radius) {
+			return true;
+		}
+	}
+	//checks for the bottom right corner
+	else if(arenaarray[x+1][y+1] === 1) {
+		if(distance(exactx, (x+1)*12, exacty, (y+1)*12) < victim.radius) {
+			return true;
+		}
+	}
+	//checks for the bottom left corner
+	else if(arenaarray[x-1][y+1] === 1) {
+		if(distance(exactx, (x-1)*12, exacty, (y+1)*12) < victim.radius) {
+			return true;
+		}
+	}
+	return 
+
 }
+	
+		
+		
+	
+//	if(distance(x, x1, y, y1) || distance(x, x2, y, y2) || distance(x, x1, y, y1) || distance(x, x1, y, y1)) {
+		
+//	}
+
+function distance(x1, x2, y1, y2) {
+	return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
+}
+
 
 //freezes for n milliseconds? Bad???
 function sleep(milliseconds) {
@@ -185,7 +242,7 @@ function sleep(milliseconds) {
 	  for (var i = 0; i < 1e7; i++) { 
 	    if ((new Date().getTime() - start) > milliseconds){
 	      break;
-	    }
+	    }f
 	  }
 	}
 //prevents scrolling
