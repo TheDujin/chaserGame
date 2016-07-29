@@ -6,6 +6,7 @@ var x;
 var y;
 var score;
 
+
 function victim(ID){
 	this.score = 0;
 	this.ID = ID;

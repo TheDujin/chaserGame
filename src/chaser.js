@@ -5,6 +5,7 @@ var direction;
 var x;
 var y;
 
+
 function chaser(ID){
 	this.ID = ID;
 	this.health = 1;
