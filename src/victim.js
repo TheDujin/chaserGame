@@ -5,9 +5,10 @@ var direction;
 var x;
 var y;
 var score;
-
+var radius;
 
 function victim(ID){
+	this.radius = 6;
 	this.score = 0;
 	this.ID = ID;
 	this.health = 1;
