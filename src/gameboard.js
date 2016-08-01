@@ -44,10 +44,11 @@ for(var z = 0; z < 50; z++) {
 }
 
 // random line
-for(var m = 10; m < 30; m++) {
-	arenaarray[m][10] = 1;
-	arenaarray[m][11] = 1;
-	arenaarray[m][12] = 1;
+for(var m = 1; m < 10; m++) {
+	arenaarray[m][7] = 1;
+}
+for(var m = 1; m < 8; m++) {
+	arenaarray[10][m] = 1;
 }
 
 
@@ -114,17 +115,18 @@ function updatePositions() {
 //	console.log(checkCollisions(players[0].x - 50, players[0].y));
 //	console.log(checkCollisions(players[0].x, players[0].y  + 50));
 //	console.log(checkCollisions(players[0].x, players[0].y  -50));
+	console.log(checkCollisions(players[0].x, players[0].y - 2));
 	for(var i = 0; i < players.length; i++) {
-	    if(rightPressed == true && checkCollisions(players[0].x + 4, players[0].y) == false) {
+	    if(rightPressed == true && checkCollisions(players[0].x + 2, players[0].y) == false) {
 	        players[0].x += 2;
 	    }
-	    else if(leftPressed == true && checkCollisions(players[0].x - 4, players[0].y) == false) {
+	    else if(leftPressed == true && checkCollisions(players[0].x - 2, players[0].y) == false) {
 	        players[0].x -= 2;
 	    }
-	    else if(upPressed == true && checkCollisions(players[0].x, players[0].y - 4) == false) {
+	    else if(upPressed == true && checkCollisions(players[0].x, players[0].y - 2) == false) {
 	        players[0].y -= 2;
 	    }
-	    else if(downPressed == true && checkCollisions(players[0].x, players[0].y + 4) == false) {
+	    else if(downPressed == true && checkCollisions(players[0].x, players[0].y + 2) == false) {
 	        players[0].y += 2;
 	    }
 	} 
@@ -161,7 +163,7 @@ function drawPlayers() {
 		// document.getElementById("myDiv").style.left = players[j].x + "px";
 		// temporary implementation. Delete everything then repaint walls
 		
-		ctx.arc(players[j].x, players[j].y, 6, 0, 2*Math.PI);
+		ctx.arc(players[j].x+1, players[j].y+1, 6, 0, 2*Math.PI);
 		ctx.fillStyle = "#00FF00";
 		ctx.fill();	
 		ctx.closePath();
@@ -182,34 +184,20 @@ function checkCollisions(x,y) {
 	console.log("Y" + y);
 	// checks for top wall
 	// arena array is the array of 1's and 0's that the map is based on
-	if(arenaarray[x][y-1] === 1) {
-		console.log("am I working1 partially");
-		if(Math.floor(exacty/12) != Math.floor((exacty-6)/12)) {
-			//if exacty 30 then okay. ... flooor = 2 
-
-			return true;
-		}
+	if(arenaarray[x][y-1] === 1 && (Math.floor(exacty/12) != Math.floor((exacty-6)/12))) {
+		return true;
 	}
 	// checks for right wall
-	else if(arenaarray[x+1][y] === 1) {
-		if(Math.floor(exactx/12) != Math.floor((exactx+6)/12)) {
-			console.log("am I working2");
-			return true;
-		}
+	else if(arenaarray[x+1][y] === 1 && (Math.floor(exactx/12) != Math.floor((exactx+6)/12))) {
+		return true;
 	}
 	// checks for bottom wall
-	else if(arenaarray[x][y+1] === 1) {
-		if(Math.floor(exacty/12) != Math.floor((exacty+6)/12)) {
-			console.log("am I working3");
-			return true;
-		}
+	else if(arenaarray[x][y+1] === 1 && (Math.floor(exacty/12) != Math.floor((exacty+6)/12))) {
+		return true;
 	}
 	// checks for left wall
-	else if(arenaarray[x-1][y] === 1) {
-		if(Math.floor((exactx-6)/12) != Math.floor(exactx/12)) {
-			console.log("am I working4");
-			return true;
-		}
+	else if(arenaarray[x-1][y] === 1 && (Math.floor((exactx-6)/12) != Math.floor(exactx/12))) {
+		return true;
 	}
 	
 	// otherwise, check for corner intersection (because this either means its
@@ -217,37 +205,24 @@ function checkCollisions(x,y) {
 	// intersecting or their are only walls in the corners
 	
 	// checks for top left corner
-	else if(arenaarray[x-1][y-1] === 1) {
-		if(distance(exactx, (x-1)*12, exacty, (y-1)*12) < victim.radius) {
-			console.log("am I working5");
-			return true;
-		}
+	else if(arenaarray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 6) {
+		return true;
 	}
 	// checks for the top right corner
-	else if(arenaarray[x+1][y-1] === 1) {
-		if(distance(exactx, (x+1)*12, exacty, (y-1)*12) < victim.radius) {
-			console.log("am I working6");
-			return true;
-		}
+	else if(arenaarray[x+1][y-1] === 1 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
+		return true;
 	}
 	// checks for the bottom right corner
-	else if(arenaarray[x+1][y+1] === 1) {
-		if(distance(exactx, (x+1)*12, exacty, (y+1)*12) < victim.radius) {
-			console.log("am I working7");
-			return true;
-		}
+	else if(arenaarray[x+1][y+1] === 1 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
+		return true;
 	}
 	// checks for the bottom left corner
-	else if(arenaarray[x-1][y+1] === 1) {
-		if(distance(exactx, (x-1)*12, exacty, (y+1)*12) < victim.radius) {
-			console.log("am I working8");
-			return true;
-		}
+	else if(arenaarray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
+		return true;
 	}
 	else {
-	return false;
+		return false;
 	}
-
 }
 	
 		
@@ -291,4 +266,4 @@ window.addEventListener("keydown", function(e) {
  *  }
  * 
  */
-setInterval(draw, 100);
+setInterval(draw, 50);
