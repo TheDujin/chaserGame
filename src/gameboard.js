@@ -61,7 +61,7 @@ function victim(ID){
 // this.x = Math.floor(Math.random() * 500);
 	// this.y = Math.floor(Math.random() * 500);
 	this.x = 200;
-	this.y = 200;
+	this.y = 300;
 }
 
 
@@ -110,21 +110,21 @@ function paintPlayers() {
 // 0 is up, 1 is right, 2 is down, 3 is left
 // finish coding. s
 function updatePositions() {
-	console.log(checkCollisions(players[0].x + 0.5, players[0].y));
-	console.log(checkCollisions(players[0].x - 0.5, players[0].y));
-	console.log(checkCollisions(players[0].x, players[0].y  + 0.5));
-	console.log(checkCollisions(players[0].x, players[0].y  - 0.5));
+//	console.log(checkCollisions(players[0].x + 50, players[0].y));
+//	console.log(checkCollisions(players[0].x - 50, players[0].y));
+//	console.log(checkCollisions(players[0].x, players[0].y  + 50));
+//	console.log(checkCollisions(players[0].x, players[0].y  -50));
 	for(var i = 0; i < players.length; i++) {
-	    if(rightPressed == true && checkCollisions(players[0].x + 0.5, players[0].y) == false) {
+	    if(rightPressed == true && checkCollisions(players[0].x + 4, players[0].y) == false) {
 	        players[0].x += 2;
 	    }
-	    else if(leftPressed == true && checkCollisions(players[0].x - 0.5, players[0].y) == false) {
+	    else if(leftPressed == true && checkCollisions(players[0].x - 4, players[0].y) == false) {
 	        players[0].x -= 2;
 	    }
-	    else if(upPressed == true && checkCollisions(players[0].x, players[0].y - 0.5) == false) {
+	    else if(upPressed == true && checkCollisions(players[0].x, players[0].y - 4) == false) {
 	        players[0].y -= 2;
 	    }
-	    else if(downPressed == true && checkCollisions(players[0].x, players[0].y + 0.5) == false) {
+	    else if(downPressed == true && checkCollisions(players[0].x, players[0].y + 4) == false) {
 	        players[0].y += 2;
 	    }
 	} 
@@ -174,13 +174,19 @@ function drawPlayers() {
 function checkCollisions(x,y) {
 	exactx = x;
 	exacty = y;
+	console.log("exactx" + exactx);
+	console.log("exacty" + exacty);
 	x = Math.floor(x/12);
 	y = Math.floor(y/12);
+	console.log("X" + x);
+	console.log("Y" + y);
 	// checks for top wall
 	// arena array is the array of 1's and 0's that the map is based on
 	if(arenaarray[x][y-1] === 1) {
+		console.log("am I working1 partially");
 		if(Math.floor(exacty/12) != Math.floor((exacty-6)/12)) {
-			console.log("am I working1");
+			//if exacty 30 then okay. ... flooor = 2 
+
 			return true;
 		}
 	}
@@ -253,6 +259,7 @@ function checkCollisions(x,y) {
 // }
 
 function distance(x1, x2, y1, y2) {
+	console.log(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 	return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
@@ -284,4 +291,4 @@ window.addEventListener("keydown", function(e) {
  *  }
  * 
  */
-setInterval(draw, 10);
+setInterval(draw, 100);
