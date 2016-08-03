@@ -5,23 +5,21 @@ var upPressed = false;
 var downPressed = false;
 
 //MODIFIERS/POWERUPS
-var movementModifier = 1;
+var movementModifier = 5	;
 var sightRangeModifier = 1;
 var visible = 1;
 
 
 
 
-
+var radius = 20;
 var players = [];
 players[0] = new victim(1234);
 
-//now the gameboard is officially 12,000pixels by 12,000 pixels 
-var WIDTH = 12000;
-var HEIGHT = 12000;
+//now the gameboard is officially 8000 pixels by 8000 pixels 
+var WIDTH = 8000;
+var HEIGHT = 8000;
 var UNIT = 40;
-var XUNITS = 600;
-var YUNITS = 600;
 var fovwidth = 1000;
 var fovheight = 600;
 
@@ -33,15 +31,42 @@ var ctx = canvas.getContext("2d");
 
 
 
-var mapArray = new Array(XUNITS);
-for(var z = 0; z < XUNITS; z++) {
-	mapArray[z] = new Array(YUNITS);
+var mapArray = new Array(WIDTH);
+for(var z = 0; z < WIDTH; z++) {
+	mapArray[z] = new Array(HEIGHT);
 }
-for(var q = 0; q < 50; q++) {
-	for(var r = 0; r < 50; r++) {
+for(var q = 0; q < WIDTH; q++) {
+	for(var r = 0; r < HEIGHT; r++) {
 		mapArray[q][r] = 0;
 	}
 }
+
+for(var z = 0; z < WIDTH; z++) {
+	for(var y = 0; y < UNIT; y++) {
+		mapArray[z][y] = 1;
+	}
+}
+/*
+for(var z = 0; z < WIDTH; z++) 	{
+	for(var y = UNIT - 1; y > ; y++) {
+		mapArray[z][y] = 1;
+	}
+}
+for(var z = 0; z < WIDTH; z++) {
+	for(var y = 0; y < UNIT; y++) {
+		mapArray[z][y] = 1;
+	}
+}
+for(var z = 0; z < WIDTH; z++) {
+	for(var y = 0; y < UNIT; y++) {
+		mapArray[z][y] = 1;
+	}
+}
+
+*/
+
+
+
 /*
 // draws top border
 for(var z = 0; z < 50; z++) {
@@ -69,7 +94,7 @@ for(var m = 1; m < 8; m++) {
 }
 */
 
-
+//now its 0 by 600
 
 
 function victim(ID){
@@ -79,12 +104,13 @@ function victim(ID){
 	this.direction = 0;
 // this.x = Math.floor(Math.random() * 500);
 	// this.y = Math.floor(Math.random() * 500);
-	this.x = 200;
-	this.y = 300;
+	this.x = 1000;
+	this.y = 400;
+	this.radius = 20;
 }
 
 
-// deals with keybaord inputs
+// deals with keyboard inputs
 document.addEventListener("keydown", keyDownHandler, false);document.addEventListener("keyup", keyUpHandler, false);
 
 function keyDownHandler(e) {
@@ -116,8 +142,6 @@ function keyUpHandler(e) {
     }
 }
 
-
-
 function paintPlayers() {
 	for(var i = 0; i < players.length; i++) {
 		// iterates through players and finds their x and y. Paints a circle.
@@ -127,13 +151,14 @@ function paintPlayers() {
 
 // obtain keycodes
 // 0 is up, 1 is right, 2 is down, 3 is left
-// finish coding. s
+// finish coding.
+	
 function updatePositions() {
-//	console.log(checkCollisions(players[0].x + 50, players[0].y));
-//	console.log(checkCollisions(players[0].x - 50, players[0].y));
-//	console.log(checkCollisions(players[0].x, players[0].y  + 50));
-//	console.log(checkCollisions(players[0].x, players[0].y  -50));
-	console.log(checkCollisions(players[0].x, players[0].y - 2));
+	console.log(players[0].x + "    " + players[0].y);
+//	console.log(checkCollisions(players[0].x + 2, players[0].y));
+//	console.log(checkCollisions(players[0].x - 2, players[0].y));
+//	console.log(checkCollisions(players[0].x, players[0].y  + 2));
+//	console.log(checkCollisions(players[0].x, players[0].y - 2));
 	for(var i = 0; i < players.length; i++) {
 	    if(rightPressed == true && checkCollisions(players[0].x + 2, players[0].y) == false) {
 	        players[0].x += 2 * movementModifier;
@@ -149,31 +174,38 @@ function updatePositions() {
 	    }
 	} 
 }
-
 // draws the player sprite
 function draw() {
 	updatePositions();
 	// repaints light bleu over everything to redraw
 	ctx.fillStyle = "#6960F5";
-	ctx.fillRect(0,0,24000,24000);
-	drawArena();
+	ctx.fillRect(0,0,1000,600);
+	drawSelf();
+	drawArena(players[0].x, players[0].y);
 	// repaints player locations
-	drawPlayers();
-
-	
 }
 // draws the arena based on player's locations
 //functionally only for one player though
 //perhaps this should draw on client side. 
 function drawArena(x,y) {
-	for(var m = Math.floor((x-(fovwidth/2))/UNIT); m < Math.floor((x-(fovwidth/2))/UNIT) + fovwidth/UNIT; m++) {
-		for(var n = Math.floor((y - (fovheight/2))/UNIT); n < Math.floor((y - (fovheight/2))/UNIT) + fovheight/UNIT; n++) {
+	var topx = x - fovwidth/2;
+	var topy = y - fovheight/2;
+	for(var m = topx; m < fovwidth + topx; m++) {
+		for(var n = topy; n < fovheight + topy; n++) {
 			if(mapArray[m][n] === 1) {
 				ctx.fillStyle = "#CCCCCC";
-				ctx.fillRect(m*UNIT, n*UNIT, UNIT, UNIT); 
+				ctx.fillRect(m - x + fovwidth/2, n - y + fovheight/2, 1, 1); 
 			}
 		}
 	}
+}
+
+function drawSelf() {
+	ctx.beginPath();
+	ctx.arc(fovwidth/2, fovheight/2, UNIT/2, 0, 2*Math.PI);
+	ctx.fillStyle = "#00FF00";
+	ctx.fill();	
+	ctx.closePath();
 }
 
 function drawPlayers() {
@@ -182,8 +214,7 @@ function drawPlayers() {
 		// document.getElementById("myDiv").style.top = players[j].y + "px";
 		// document.getElementById("myDiv").style.left = players[j].x + "px";
 		// temporary implementation. Delete everything then repaint walls
-		
-		ctx.arc(players[j].x+1, players[j].y+1, 6, 0, 2*Math.PI);
+		ctx.arc(players[j].x, players[j].y, 6, 0, 2*Math.PI);
 		ctx.fillStyle = "#00FF00";
 		ctx.fill();	
 		ctx.closePath();
@@ -194,64 +225,69 @@ function drawPlayers() {
 // collision checker for both walls + players
 // returns true if there are any collisions
 function checkCollisions(x,y) {
-	exactx = x;
-	exacty = y;
-	console.log("exactx" + exactx);
-	console.log("exacty" + exacty);
-	x = Math.floor(x/12);
-	y = Math.floor(y/12);
-	console.log("X" + x);
-	console.log("Y" + y);
-	// checks for top wall
-	// arena array is the array of 1's and 0's that the map is based on
-	if(mapArray[x][y-1] === 1 && (Math.floor(exacty/12) != Math.floor((exacty-6)/12))) {
-		return true;
+/*	x = Math.floor(x);
+	y = Math.floor(y);
+	console.log("checking for collisions");
+	for(var i = x - 50; i < x + 50; i+=5) {
+		for(var j = y - 50; y < y + 50; y+=5) {
+			console.log(i + " " + j);
+			if(mapArray[i][j] === 1 && distance(i, x, j, y) < 20) {
+				console.log("true");
+				return true;
+			}
+		}
 	}
-	// checks for right wall
-	else if(mapArray[x+1][y] === 1 && (Math.floor(exactx/12) != Math.floor((exactx+6)/12))) {
-		return true;
-	}
-	// checks for bottom wall
-	else if(mapArray[x][y+1] === 1 && (Math.floor(exacty/12) != Math.floor((exacty+6)/12))) {
-		return true;
-	}
-	// checks for left wall
-	else if(mapArray[x-1][y] === 1 && (Math.floor((exactx-6)/12) != Math.floor(exactx/12))) {
-		return true;
-	}
-	
-	// otherwise, check for corner intersection (because this either means its
-	// not
-	// intersecting or their are only walls in the corners
-	
-	// checks for top left corner
-	else if(mapArray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 6) {
-		return true;
-	}
-	// checks for the top right corner
-	else if(mapArray[x+1][y-1] === 1 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
-		return true;
-	}
-	// checks for the bottom right corner
-	else if(mapArray[x+1][y+1] === 1 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
-		return true;
-	}
-	// checks for the bottom left corner
-	else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
-		return true;
-	}
-	else {
-		return false;
-	}
+	*/
+	return false;	
 }
-	
-		
-		
-	
-// if(distance(x, x1, y, y1) || distance(x, x2, y, y2) || distance(x, x1, y, y1)
-// || distance(x, x1, y, y1)) {
-		
-// }
+
+/*exactx = x;
+exacty = y;
+x = Math.floor(x/12);
+y = Math.floor(y/12);
+// checks for top wall
+// arena array is the array of 1's and 0's that the map is based on
+if(mapArray[x][y-1] === 1 && (Math.floor(exacty/12) != Math.floor((exacty-6)/12))) {
+	return true;
+}
+// checks for right wall
+else if(mapArray[x+1][y] === 1 && (Math.floor(exactx/12) != Math.floor((exactx+6)/12))) {
+	return true;
+}
+// checks for bottom wall
+else if(mapArray[x][y+1] === 1 && (Math.floor(exacty/12) != Math.floor((exacty+6)/12))) {
+	return true;
+}
+// checks for left wall
+else if(mapArray[x-1][y] === 1 && (Math.floor((exactx-6)/12) != Math.floor(exactx/12))) {
+	return true;
+}
+
+// otherwise, check for corner intersection (because this either means its
+// not
+// intersecting or their are only walls in the corners
+
+// checks for top left corner
+else if(mapArray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 6) {
+	return true;
+}
+// checks for the top right corner
+else if(mapArray[x+1][y-1] === 1 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
+	return true;
+}
+// checks for the bottom right corner
+else if(mapArray[x+1][y+1] === 1 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
+	return true;
+}
+// checks for the bottom left corner
+else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
+	return true;
+}
+else {
+	return false;
+}
+*/
+
 
 function distance(x1, x2, y1, y2) {
 	console.log(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
@@ -268,6 +304,8 @@ function sleep(milliseconds) {
 	    }f
 	  }
 	}
+
+
 // prevents scrolling
 window.addEventListener("keydown", function(e) {
     // space, page up, page down and arrow keys:
@@ -276,6 +314,8 @@ window.addEventListener("keydown", function(e) {
     }
 }, false);
 
+
+//IP: 10.218.223.188
 /*
  * 
  * while(counter < 100) { console.log("this is being called");
@@ -286,4 +326,4 @@ window.addEventListener("keydown", function(e) {
  *  }
  * 
  */
-setInterval(draw, 50);
+setInterval(draw, 10);
