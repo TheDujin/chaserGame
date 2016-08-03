@@ -4,13 +4,19 @@ var leftPressed = false;
 var upPressed = false;
 var downPressed = false;
 
-
+var radius = 15;
 var players = [];
-players[0] = new victim(1234);
 
 
-var arrayw = 50;
-var arrayh = 50;
+var HEIGHT = 9000;
+var WIDTH = 9000;
+var XUNITS = 300;
+var YUNITS = 300;
+
+
+var UNIT = 30;
+var fovwidth = 1200;
+var fovheight = 600;
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 ctx.fillStyle="#736AFF";
@@ -66,60 +72,57 @@ var arenaarray = [[1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
 [1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1], 
 [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1]]
 
-
-//var arenaarray = new Array(50);
-//for(var z = 0; z < 50; z++) {
-//	arenaarray[z] = new Array(50);
-//}
-//var reader = new FileReader()
-//reader.readAsText("..\Arena.txt");
-//arenaarray = reader.result;
-//	fileInput.addEventListener('change', function(e) {
-//		var file = fileInput.files[0];
-//		var textType = /text.*/;
-//		if (file.type.match(textType)) {
-//			var reader = new FileReader();
-//			reader.onload = function(e) {
-//				arenaarray = reader.result;
-//			}
-//			reader.readAsText("..\Arena.txt");
-//		} else {
-//			fileDisplayArea.innerText = "File not supported!";
-//		}
-//});
-
-//for(var q = 0; q < 50; q++) {
-//	for(var r = 0; r < 50; r++) {
-//		arenaarray[q][r] = 0;
-//	}
-//}
-//
-//// draws top border
-//for(var z = 0; z < 50; z++) {
-//	arenaarray[z][0] = 1;
-//}
-//// draws right border
-//for(var z = 0; z < 50; z++) {
-//	arenaarray[49][z] = 1;
-//}
-//// draws bottom border
-//for(var z = 0; z < 50; z++) {
-//	arenaarray[z][49] = 1;
-//}
-//// draws left border
-//for(var z = 0; z < 50; z++) {
-//	arenaarray[0][z] = 1;
-//}
-//
-//// random line
-//for(var m = 1; m < 10; m++) {
-//	arenaarray[m][7] = 1;
-//}
-//for(var m = 1; m < 8; m++) {
-//	arenaarray[10][m] = 1;
-//}
-
-
+	//var arenaarray = new Array(50);
+	//for(var z = 0; z < 50; z++) {
+	//	arenaarray[z] = new Array(50);
+	//}
+	//var reader = new FileReader()
+	//reader.readAsText("..\Arena.txt");
+	//arenaarray = reader.result;
+	//	fileInput.addEventListener('change', function(e) {
+	//		var file = fileInput.files[0];
+	//		var textType = /text.*/;
+	//		if (file.type.match(textType)) {
+	//			var reader = new FileReader();
+	//			reader.onload = function(e) {
+	//				arenaarray = reader.result;
+	//			}
+	//			reader.readAsText("..\Arena.txt");
+	//		} else {
+	//			fileDisplayArea.innerText = "File not supported!";
+	//		}
+	//});
+	
+	//for(var q = 0; q < 50; q++) {
+	//	for(var r = 0; r < 50; r++) {
+	//		arenaarray[q][r] = 0;
+	//	}
+	//}
+	//
+	//// draws top border
+	//for(var z = 0; z < 50; z++) {
+	//	arenaarray[z][0] = 1;
+	//}
+	//// draws right border
+	//for(var z = 0; z < 50; z++) {
+	//	arenaarray[49][z] = 1;
+	//}
+	//// draws bottom border
+	//for(var z = 0; z < 50; z++) {
+	//	arenaarray[z][49] = 1;
+	//}
+	//// draws left border
+	//for(var z = 0; z < 50; z++) {
+	//	arenaarray[0][z] = 1;
+	//}
+	//
+	//// random line
+	//for(var m = 1; m < 10; m++) {
+	//	arenaarray[m][7] = 1;
+	//}
+	//for(var m = 1; m < 8; m++) {
+	//	arenaarray[10][m] = 1;
+	//}
 
 
 function victim(ID){
@@ -132,6 +135,8 @@ function victim(ID){
 	this.x = 200;
 	this.y = 300;
 }
+var victim = new victim(1234);
+players[0] = victim;
 
 
 // deals with keybaord inputs
@@ -165,8 +170,6 @@ function keyUpHandler(e) {
     	downPressed = false;
     }
 }
-
-
 
 function paintPlayers() {
 	for(var i = 0; i < players.length; i++) {
@@ -205,17 +208,19 @@ function draw() {
 	updatePositions();
 	// repaints light bleu over everything to redraw
 	ctx.fillStyle = "#6960F5";
-	ctx.fillRect(0,0,600,600);
+	ctx.fillRect(0,0,1200,600);
 	drawArena();
 	// repaints player locations
-	drawPlayers();
-
-	
+	drawSelf();
 }
 // draws the arena
+
+
 function drawArena() {
-	for(var m = 0; m < arrayw; m++) {
-		for(var n = 0; n < arrayh; n++) {
+	var topunitx = Math.floor((x - fovwidth/2)/UNIT);
+	var topunity = Math.floor((x - fovheight/2)/UNIT);
+	for(var m = topunitx; m < fovwidth/UNIT; m++) {
+		for(var n = topunity; n < fovheight/UNIT; n++) {
 			if(arenaarray[m][n] === 1) {
 				ctx.fillStyle = "#CCCCCC";
 				ctx.fillRect(m*12, n*12, 12, 12); 
@@ -224,18 +229,24 @@ function drawArena() {
 	}
 }
 
+function drawSelf() {
+	ctx.beginPath();
+	ctx.arc(fovwidth/2, fovheight/2, radius, 0, 2*Math.PI);
+	ctx.fillStyle = "#00FF00";
+	ctx.fill();	
+	ctx.closePath();
+}
+
 function drawPlayers() {
 	for(var j = 0; j < players.length; j++) {
 		ctx.beginPath();
 		// document.getElementById("myDiv").style.top = players[j].y + "px";
 		// document.getElementById("myDiv").style.left = players[j].x + "px";
 		// temporary implementation. Delete everything then repaint walls
-		
 		ctx.arc(players[j].x+1, players[j].y+1, 4, 0, 2*Math.PI);
 		ctx.fillStyle = "#00FF00";
 		ctx.fill();	
 		ctx.closePath();
-	
 	}
 }
 
@@ -273,19 +284,19 @@ function checkCollisions(x,y) {
 	// intersecting or their are only walls in the corners
 	
 	// checks for top left corner
-	else if(arenaarray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 4) {
+	else if(arenaarray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 6) {
 		return true;
 	}
 	// checks for the top right corner
-	else if(arenaarray[x+1][y-1] === 1 && distance(exactx, (x+1)*12, exacty, (y)*12) < 4) {
+	else if(arenaarray[x+1][y-1] === 1 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
 		return true;
 	}
 	// checks for the bottom right corner
-	else if(arenaarray[x+1][y+1] === 1 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 4) {
+	else if(arenaarray[x+1][y+1] === 1 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
 		return true;
 	}
 	// checks for the bottom left corner
-	else if(arenaarray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 4) {
+	else if(arenaarray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
 		return true;
 	}
 	else {
