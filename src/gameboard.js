@@ -11,6 +11,7 @@ players[0] = new victim(1234);
 
 var arrayw = 50;
 var arrayh = 50;
+var score = document.getElementById("score")
 var canvas = document.getElementById("myCanvas");
 var ctx = canvas.getContext("2d");
 ctx.fillStyle="#736AFF";
@@ -209,7 +210,7 @@ function draw() {
 	ctx.fillRect(0,0,600,600);
 	drawArena();
 	// repaints player locations
-	drawPlayers();
+	updatePlayers();
 
 	
 }
@@ -225,7 +226,7 @@ function drawArena() {
 	}
 }
 
-function drawPlayers() {
+function updatePlayers() {
 	for(var j = 0; j < players.length; j++) {
 		ctx.beginPath();
 		// document.getElementById("myDiv").style.top = players[j].y + "px";
@@ -236,10 +237,15 @@ function drawPlayers() {
 		ctx.fillStyle = "#00FF00";
 		ctx.fill();	
 		ctx.closePath();
+		players[j].score += 5;
+		console.log(players[j].score);
+		document.getElementById("score").innerHTML = players[j].score;
 	
 	}
 }
-
+//function Score(){
+//	return players[0].score;
+//}
 // collision checker for both walls + players
 // returns true if there are any collisions
 function checkCollisions(x,y) {
@@ -335,4 +341,4 @@ window.addEventListener("keydown", function(e) {
  *  }
  * 
  */
-setInterval(draw, 7);
+setInterval(draw, 50);
