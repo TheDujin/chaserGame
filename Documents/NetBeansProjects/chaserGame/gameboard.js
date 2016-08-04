@@ -167,6 +167,7 @@ function draw() {
 	ctx.fillStyle = "#6960F5";
 	ctx.fillRect(0,0,1200,600);
 	drawArena(players[0].x,players[0].y);
+        drawTargeter();
 	// repaints player locations
 	drawSelf();
 }
@@ -280,6 +281,36 @@ window.addEventListener("keydown", function(e) {
         e.preventDefault();
     }
 }, false);
+
+function drawTargeter() {
+        //angle in radians
+        var cursorDistance = 50;
+        var angle = 0;
+        if(mouseX < 600) {
+            angle = -Math.atan2((300 - mouseY), (mouseX - 600));
+        }
+        else {
+        angle = -Math.atan((300 - mouseY)/(mouseX - 600));
+    }
+        
+        console.log("Angle" + angle);
+        var cursorX = cursorDistance * Math.cos(angle) + 600;
+        var cursorY = cursorDistance * Math.sin(angle) + 300;
+        var cursorX2 = 0.70 * cursorDistance * Math.cos(angle) + 600;
+        var cursorY2 = 0.70 * cursorDistance * Math.sin(angle) + 300;
+        var cursorX3 = 0.45 * cursorDistance * Math.cos(angle) + 600;
+        var cursorY3 = 0.45 * cursorDistance * Math.sin(angle) + 300;
+        ctx.beginPath();
+        ctx.fillStyle = "#FF0000";
+        ctx.arc(cursorX, cursorY, 5, 0, Math.PI * 2);
+        ctx.arc(cursorX2, cursorY2, 4, 0, Math.PI * 2);
+        ctx.arc(cursorX3, cursorY3, 3, 0, Math.PI * 2);
+        
+        ctx.fill();
+        ctx.closePath();
+        
+        
+    }
 
 /*
  * 
