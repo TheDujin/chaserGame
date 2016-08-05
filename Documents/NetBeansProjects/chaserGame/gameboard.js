@@ -312,15 +312,5 @@ function drawTargeter() {
         
     }
 
-/*
- * 
- * while(counter < 100) { console.log("this is being called");
- * console.log(document.getElementById('xcood'))
- * document.getElementById('xcood').innerHTML = counter; // updatePositions(); //
- * 1. move characters // 2. check for collisions between players // 3. death
- * events counter++;
- *  }
- * 
- */
 setInterval(draw, 10);
 
