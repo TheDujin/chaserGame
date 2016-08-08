@@ -160,8 +160,6 @@ function updatePositions() {
 	for(var i = 0; i < players.length; i++){
 		console.log("baboon");
 		console.log("speedModifer: "+players[0].speedModifer);
-		console.log("player x: "+players[i].x);
-		console.log("player y: "+players[i].y);
 		if(checkSpeedPowerup(players[i].x, players[i].y) == true){
 			players[i].speedModifer = 4;
 			console.log("speedModifer1: "+players[0].speedModifer);
@@ -171,22 +169,13 @@ function updatePositions() {
 	    if(rightPressed == true && checkCollisions(players[i].x + 2 * players[i].speedModifer, players[i].y) == false) {
 	        players[0].x += 2 * players[i].speedModifer;
 	    }
-	    else if(leftPressed == true && checkCollisions(players[i].x - 2 * players[i].speedModifer, players[i].y) == false) {
+	    if(leftPressed == true && checkCollisions(players[i].x - 2 * players[i].speedModifer, players[i].y) == false) {
 	        players[0].x -= 2 * players[i].speedModifer;
 	    }
-	    if(leftPressed == true && checkCollisions(players[0].x - 2 * players[i].speedModifer, players[0].y) == false) {
-	        players[0].x -= 2 * players[i].speedModifer;
-	    }
-	    else if(upPressed == true && checkCollisions(players[i].x, players[i].y - 2 * players[i].speedModifer) == false) {
+	    if(upPressed == true && checkCollisions(players[i].x, players[i].y - 2 * players[i].speedModifer) == false) {
 	        players[0].y -= 2 * players[i].speedModifer;
 	    }
-	    if(upPressed == true && checkCollisions(players[0].x, players[0].y - 2 * players[i].speedModifer) == false) {
-	        players[0].y -= 2 * players[i].speedModifer;
-	    }
-	    else if(downPressed == true && checkCollisions(players[i].x, players[i].y + 2 * players[i].speedModifer) == false) {
-	        players[0].y += 2 * players[i].speedModifer;
-	    }
-	    if(downPressed == true && checkCollisions(players[0].x, players[0].y + 2 * players[i].speedModifer) == false) {
+	    if(downPressed == true && checkCollisions(players[i].x, players[i].y + 2 * players[i].speedModifer) == false) {
 	        players[0].y += 2 * players[i].speedModifer;
 	    }
 	} 
@@ -425,43 +414,6 @@ function checkCollisions(x,y) {
 	// checks for the bottom left corner
 	else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
 		return true;
-	}
-	//
-	if(mapArray[x][y-1] === 2 && (Math.floor(exacty/UNIT) != Math.floor((exacty - radius)/UNIT))) {
-		mapArray[x][y-1] = 0;
-	}
-	// checks for right wall
-	else if(mapArray[x+1][y] === 2 && (Math.floor(exactx/UNIT) != Math.floor((exactx+4)/UNIT))) {
-		mapArray[x+1][y] = 0;
-	}
-	// checks for bottom wall
-	else if(mapArray[x][y+1] === 2 && (Math.floor(exacty/UNIT) != Math.floor((exacty+radius)/UNIT))) {
-		mapArray[x][y+1] = 0;
-	}
-	// checks for left wall
-	else if(mapArray[x-1][y] === 2 && (Math.floor((exactx-radius)/UNIT) != Math.floor(exactx/UNIT))) {
-		mapArray[x-1][y] = 0;
-	}
-	
-	// otherwise, check for corner intersection (because this either means its
-	// not
-	// intersecting or their are only walls in the corners
-	
-	// checks for top left corner
-	else if(mapArray[x-1][y-1] === 2 && distance(exactx, x*12, exacty, x*12) < 6) {
-		mapArray[x-1][y-1] = 0;
-	}
-	// checks for the top right corner
-	else if(mapArray[x+1][y-1] === 2 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
-		mapArray[x+1][y-1] = 0;
-	}
-	// checks for the bottom right corner
-	else if(mapArray[x+1][y+1] === 2 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
-		mapArray[x+1][y+1] = 0;
-	}
-	// checks for the bottom left corner
-	else if(mapArray[x-1][y+1] === 2 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
-		mapArray[x-1][y+1] = 0;
 	}
 	if(mapArray[x][y-1] === 3 && (Math.floor(exacty/UNIT) != Math.floor((exacty - radius)/UNIT))) {
 		mapArray[x][y-1] = 0;
