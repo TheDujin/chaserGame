@@ -235,6 +235,9 @@ function drawPlayers() {
 		ctx.fillStyle = "#00FF00";
 		ctx.fill();	
 		ctx.closePath();
+		players[j].score += 5;
+		console.log(players[j].score);
+		document.getElementById("score").innerHTML = players[j].score;
 	}
 }
 
