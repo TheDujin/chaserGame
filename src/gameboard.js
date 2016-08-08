@@ -297,6 +297,43 @@ function checkCollisions(x,y) {
 	else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
 		return true;
 	}
+	//
+	if(mapArray[x][y-1] === 2 && (Math.floor(exacty/UNIT) != Math.floor((exacty - radius)/UNIT))) {
+		mapArray[x][y-1] = 0;
+	}
+	// checks for right wall
+	else if(mapArray[x+1][y] === 2 && (Math.floor(exactx/UNIT) != Math.floor((exactx+4)/UNIT))) {
+		mapArray[x+1][y] = 0;
+	}
+	// checks for bottom wall
+	else if(mapArray[x][y+1] === 2 && (Math.floor(exacty/UNIT) != Math.floor((exacty+radius)/UNIT))) {
+		mapArray[x][y+1] = 0;
+	}
+	// checks for left wall
+	else if(mapArray[x-1][y] === 2 && (Math.floor((exactx-radius)/UNIT) != Math.floor(exactx/UNIT))) {
+		mapArray[x-1][y] = 0;
+	}
+	
+	// otherwise, check for corner intersection (because this either means its
+	// not
+	// intersecting or their are only walls in the corners
+	
+	// checks for top left corner
+	else if(mapArray[x-1][y-1] === 2 && distance(exactx, x*12, exacty, x*12) < 6) {
+		mapArray[x-1][y-1] = 0;
+	}
+	// checks for the top right corner
+	else if(mapArray[x+1][y-1] === 2 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
+		mapArray[x+1][y-1] = 0;
+	}
+	// checks for the bottom right corner
+	else if(mapArray[x+1][y+1] === 2 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x+1][y+1] = 0;
+	}
+	// checks for the bottom left corner
+	else if(mapArray[x-1][y+1] === 2 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x-1][y+1] = 0;
+	}
 	else {
 		return false;
 	}
