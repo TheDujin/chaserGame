@@ -148,9 +148,11 @@ function updatePositions() {
 //	console.log(checkCollisions(players[0].x, players[0].y  -50));
 //	console.log(checkCollisions(players[0].x, players[0].y - 2));
 //        console.log("player X: " + players[0].x + "Y: " + players[0].y);
+	
+	//spawns a powerup every 15 seconds (1500 cycles)
 	counter++;
-	if (counter >= 1500) {
-		counter -= 1500
+	if (counter >= 15) {
+		counter -= 15
 		spawnPowerup()
 	}
 	for(var i = 0; i < players.length; i++) {
@@ -183,6 +185,7 @@ function spawnPowerup() {
 		y = Math.floor(Math.random() * 50) + 75;
 		if (mapArray[x][y] !== 1) {
 			console.log("Working: " + x + " " + y)
+			mapArray[x][y] = 2;
 			return (x + " " + y)
 		}
 	}
@@ -195,7 +198,7 @@ function draw() {
 	ctx.fillStyle = "#6960F5";
 	ctx.fillRect(0,0,1200,600);
 	drawArena(players[0].x,players[0].y);
-        drawTargeter();
+    drawTargeter();
 	// repaints player locations
 	drawSelf();
 }
@@ -214,6 +217,10 @@ function drawArena(x,y) {
 				ctx.fillStyle = "#CCCCCC";
 				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
 			}
+                            if(mapArray[m][n] === 2) {
+                				ctx.fillStyle = "#FFFF00";
+                				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
+                			}
 		}
 	}
 }
