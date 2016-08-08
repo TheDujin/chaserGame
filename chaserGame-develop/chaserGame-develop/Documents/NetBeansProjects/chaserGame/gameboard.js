@@ -60,8 +60,7 @@ function victim(ID){
 	// this.y = Math.floor(Math.random() * 500);
 	this.x = 2550;
 	this.y = 2130;
-	this.score = 0;
-    this.radius = 15
+        this.radius = 15
 }
 var victim = new victim(1234);
 players[0] = victim;
@@ -165,7 +164,7 @@ function updatePositions() {
 
 // draws the player sprite
 function draw() {
-    console.log("mouseX" + mouseX + " " + "mouseY " + mouseY);
+        console.log("mouseX" + mouseX + " " + "mouseY " + mouseY);
 	updatePositions();
 	// repaints light bleu over everything to redraw
 	ctx.fillStyle = "#6960F5";
@@ -199,10 +198,6 @@ function drawSelf() {
 	ctx.fillStyle = "#00FF00";
 	ctx.fill();	
 	ctx.closePath();
-	players[0].score += 5;
-	console.log(players[0].score);
-	document.getElementById("score").innerHTML = players[0].score;
-	
 }
 
 function drawPlayers() {
@@ -217,7 +212,7 @@ function drawPlayers() {
 		ctx.closePath();
 		players[j].score += 5;
 		console.log(players[j].score);
-		//document.getElementById("score").innerHTML = players[j].score;
+		document.getElementById("score").innerHTML = players[j].score;
 	}
 }
 
