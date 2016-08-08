@@ -341,4 +341,4 @@ window.addEventListener("keydown", function(e) {
  *  }
  * 
  */
-setInterval(draw, 50);
+setInterval(draw, 7);
