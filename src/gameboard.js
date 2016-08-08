@@ -75,13 +75,13 @@ function keyDownHandler(e) {
     if(e.keyCode == 39) {
         rightPressed = true;
     }
-    else if(e.keyCode == 37) {
+    if(e.keyCode == 37) {
         leftPressed = true;
     }
-    else if(e.keyCode == 38) {
+    if(e.keyCode == 38) {
     	upPressed = true;
     }
-    else if(e.keyCode == 40) {
+    if(e.keyCode == 40) {
     	downPressed = true;
     }
 }
@@ -89,13 +89,13 @@ function keyUpHandler(e) {
     if(e.keyCode == 39) {
         rightPressed = false;
     }
-    else if(e.keyCode == 37) {
+    if(e.keyCode == 37) {
         leftPressed = false;
     }
-    else if(e.keyCode == 38) {
+    if(e.keyCode == 38) {
     	upPressed = false;
     }
-    else if(e.keyCode == 40) {
+    if(e.keyCode == 40) {
     	downPressed = false;
     }
 }
@@ -151,42 +151,82 @@ function updatePositions() {
 	
 	//spawns a powerup every 15 seconds (1500 cycles)
 	counter++;
-	if (counter >= 1500) {
-		counter -= 1500
+	if (counter >= 500) {
+		counter -= 500
 		spawnPowerup()
 	}
 	for(var i = 0; i < players.length; i++) {
 	    if(rightPressed == true && checkCollisions(players[0].x + 2 * speedModifer, players[0].y) == false) {
 	        players[0].x += 2 * speedModifer;
 	    }
-	    else if(leftPressed == true && checkCollisions(players[0].x - 2 * speedModifer, players[0].y) == false) {
+	    if(leftPressed == true && checkCollisions(players[0].x - 2 * speedModifer, players[0].y) == false) {
 	        players[0].x -= 2 * speedModifer;
 	    }
-	    else if(upPressed == true && checkCollisions(players[0].x, players[0].y - 2 * speedModifer) == false) {
+	    if(upPressed == true && checkCollisions(players[0].x, players[0].y - 2 * speedModifer) == false) {
 	        players[0].y -= 2 * speedModifer;
 	    }
-	    else if(downPressed == true && checkCollisions(players[0].x, players[0].y + 2 * speedModifer) == false) {
+	    if(downPressed == true && checkCollisions(players[0].x, players[0].y + 2 * speedModifer) == false) {
 	        players[0].y += 2 * speedModifer;
 	    }
 	} 
 }
 
 function spawnPowerup() {
-	var isValid = false;
+	var i = 0;
 	var x = Math.floor(Math.random() * 50) + 75;
 	var y = Math.floor(Math.random() * 50) + 75;
-	if (mapArray[x][y] !== 1) {
+	if (mapArray[x][y] < 1) {
 		console.log("Working: " + x + " " + y)
-		return (x + " " + y)
+		mapArray[x][y] = 2;
+		i = 5
 	}
-	while(!isValid) {
+	while(i < 5) {
 		console.log(x + " " + y)
 		x = Math.floor(Math.random() * 50) + 75;
 		y = Math.floor(Math.random() * 50) + 75;
-		if (mapArray[x][y] !== 1) {
+		i++
+		if (mapArray[x][y] < 1) {
 			console.log("Working: " + x + " " + y)
 			mapArray[x][y] = 2;
-			return (x + " " + y)
+			i = 5
+		}
+	}
+	i = 0;
+	x = Math.floor(Math.random() * 50) + 75;
+	y = Math.floor(Math.random() * 50) + 75;
+	if (mapArray[x][y] < 1) {
+		console.log("Working: " + x + " " + y)
+		mapArray[x][y] = 3;
+		i = 5
+	}
+	while(i < 5) {
+		console.log(x + " " + y)
+		x = Math.floor(Math.random() * 50) + 75;
+		y = Math.floor(Math.random() * 50) + 75;
+		i++
+		if (mapArray[x][y] < 1) {
+			console.log("Working: " + x + " " + y)
+			mapArray[x][y] = 3;
+			i = 5
+		}
+	}
+	i = 0;
+	x = Math.floor(Math.random() * 50) + 75;
+	y = Math.floor(Math.random() * 50) + 75;
+	if (mapArray[x][y] < 1) {
+		console.log("Working: " + x + " " + y)
+		mapArray[x][y] = 4;
+		i = 5
+	}
+	while(i < 5) {
+		console.log(x + " " + y)
+		x = Math.floor(Math.random() * 50) + 75;
+		y = Math.floor(Math.random() * 50) + 75;
+		i++
+		if (mapArray[x][y] < 1) {
+			console.log("Working: " + x + " " + y)
+			mapArray[x][y] = 4;
+			i = 5
 		}
 	}
 }
@@ -212,15 +252,23 @@ function drawArena(x,y) {
 //        console.log("UNITY" + topunity);
         
 	for(var m = topunitx; m < fovwidth/UNIT + topunitx; m++) {
-                    for(var n = topunity; n < fovheight/UNIT + topunity; n++) {
-                            if(mapArray[m][n] === 1) {
+    	for(var n = topunity; n < fovheight/UNIT + topunity; n++) {
+            if(mapArray[m][n] === 1) {
 				ctx.fillStyle = "#CCCCCC";
 				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
 			}
-                            if(mapArray[m][n] === 2) {
-                				ctx.fillStyle = "#FFFF00";
-                				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
-                			}
+            if(mapArray[m][n] === 2) {
+				ctx.fillStyle = "#FFFF00";
+				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
+			}
+            if(mapArray[m][n] === 3) {
+				ctx.fillStyle = "#008000";
+				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
+			}
+            if(mapArray[m][n] === 4) {
+				ctx.fillStyle = "#800080";
+				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
+			}
 		}
 	}
 }
@@ -332,6 +380,78 @@ function checkCollisions(x,y) {
 	}
 	// checks for the bottom left corner
 	else if(mapArray[x-1][y+1] === 2 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x-1][y+1] = 0;
+	}
+	if(mapArray[x][y-1] === 3 && (Math.floor(exacty/UNIT) != Math.floor((exacty - radius)/UNIT))) {
+		mapArray[x][y-1] = 0;
+	}
+	// checks for right wall
+	else if(mapArray[x+1][y] === 3 && (Math.floor(exactx/UNIT) != Math.floor((exactx+4)/UNIT))) {
+		mapArray[x+1][y] = 0;
+	}
+	// checks for bottom wall
+	else if(mapArray[x][y+1] === 3 && (Math.floor(exacty/UNIT) != Math.floor((exacty+radius)/UNIT))) {
+		mapArray[x][y+1] = 0;
+	}
+	// checks for left wall
+	else if(mapArray[x-1][y] === 3 && (Math.floor((exactx-radius)/UNIT) != Math.floor(exactx/UNIT))) {
+		mapArray[x-1][y] = 0;
+	}
+	
+	// otherwise, check for corner intersection (because this either means its
+	// not
+	// intersecting or their are only walls in the corners
+	
+	// checks for top left corner
+	else if(mapArray[x-1][y-1] === 3 && distance(exactx, x*12, exacty, x*12) < 6) {
+		mapArray[x-1][y-1] = 0;
+	}
+	// checks for the top right corner
+	else if(mapArray[x+1][y-1] === 3 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
+		mapArray[x+1][y-1] = 0;
+	}
+	// checks for the bottom right corner
+	else if(mapArray[x+1][y+1] === 3 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x+1][y+1] = 0;
+	}
+	// checks for the bottom left corner
+	else if(mapArray[x-1][y+1] === 3 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x-1][y+1] = 0;
+	}
+	if(mapArray[x][y-1] === 4 && (Math.floor(exacty/UNIT) != Math.floor((exacty - radius)/UNIT))) {
+		mapArray[x][y-1] = 0;
+	}
+	// checks for right wall
+	else if(mapArray[x+1][y] === 4 && (Math.floor(exactx/UNIT) != Math.floor((exactx+4)/UNIT))) {
+		mapArray[x+1][y] = 0;
+	}
+	// checks for bottom wall
+	else if(mapArray[x][y+1] === 4 && (Math.floor(exacty/UNIT) != Math.floor((exacty+radius)/UNIT))) {
+		mapArray[x][y+1] = 0;
+	}
+	// checks for left wall
+	else if(mapArray[x-1][y] === 4 && (Math.floor((exactx-radius)/UNIT) != Math.floor(exactx/UNIT))) {
+		mapArray[x-1][y] = 0;
+	}
+	
+	// otherwise, check for corner intersection (because this either means its
+	// not
+	// intersecting or their are only walls in the corners
+	
+	// checks for top left corner
+	else if(mapArray[x-1][y-1] === 4 && distance(exactx, x*12, exacty, x*12) < 6) {
+		mapArray[x-1][y-1] = 0;
+	}
+	// checks for the top right corner
+	else if(mapArray[x+1][y-1] === 4 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
+		mapArray[x+1][y-1] = 0;
+	}
+	// checks for the bottom right corner
+	else if(mapArray[x+1][y+1] === 4 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x+1][y+1] = 0;
+	}
+	// checks for the bottom left corner
+	else if(mapArray[x-1][y+1] === 4 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
 		mapArray[x-1][y+1] = 0;
 	}
 	else {
