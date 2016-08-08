@@ -151,8 +151,8 @@ function updatePositions() {
 	
 	//spawns a powerup every 15 seconds (1500 cycles)
 	counter++;
-	if (counter >= 15) {
-		counter -= 15
+	if (counter >= 1500) {
+		counter -= 1500
 		spawnPowerup()
 	}
 	for(var i = 0; i < players.length; i++) {
