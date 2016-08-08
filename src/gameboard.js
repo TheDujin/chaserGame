@@ -24,7 +24,7 @@ ctx.fillRect(0,0,1200,600);
 
 
 //game mechanics
-var speedModifer = 2;
+var speedModifer = 1;
 var gundirection = 0;
 
 
@@ -63,6 +63,7 @@ function victim(ID){
 	this.y = 2130;
 	this.score = 0;
     this.radius = 15
+    this.speedModifer = 2;
 }
 var victim = new victim(1234);
 players[0] = victim;
@@ -155,15 +156,35 @@ function updatePositions() {
 		counter -= 50
 		spawnPowerup()
 	}
+	console.log("speedModifer: "+players[0].speedModifer);
+	for(var i = 0; i < players.length; i++){
+		console.log("baboon");
+		console.log("speedModifer: "+players[0].speedModifer);
+		console.log("player x: "+players[i].x);
+		console.log("player y: "+players[i].y);
+		if(checkSpeedPowerup(players[i].x, players[i].y) == true){
+			players[i].speedModifer = 3;
+			console.log("speedModifer1: "+players[0].speedModifer);
+		}
+	}
 	for(var i = 0; i < players.length; i++) {
-	    if(rightPressed == true && checkCollisions(players[0].x + 2 * speedModifer, players[0].y) == false) {
-	        players[0].x += 2 * speedModifer;
+	    if(rightPressed == true && checkCollisions(players[i].x + 2 * players[i].speedModifer, players[i].y) == false) {
+	        players[0].x += 2 * players[i].speedModifer;
+	    }
+	    else if(leftPressed == true && checkCollisions(players[i].x - 2 * players[i].speedModifer, players[i].y) == false) {
+	        players[0].x -= 2 * players[i].speedModifer;
 	    }
 	    if(leftPressed == true && checkCollisions(players[0].x - 2 * speedModifer, players[0].y) == false) {
 	        players[0].x -= 2 * speedModifer;
 	    }
+	    else if(upPressed == true && checkCollisions(players[i].x, players[i].y - 2 * players[i].speedModifer) == false) {
+	        players[0].y -= 2 * players[i].speedModifer;
+	    }
 	    if(upPressed == true && checkCollisions(players[0].x, players[0].y - 2 * speedModifer) == false) {
 	        players[0].y -= 2 * speedModifer;
+	    }
+	    else if(downPressed == true && checkCollisions(players[i].x, players[i].y + 2 * players[i].speedModifer) == false) {
+	        players[0].y += 2 * players[i].speedModifer;
 	    }
 	    if(downPressed == true && checkCollisions(players[0].x, players[0].y + 2 * speedModifer) == false) {
 	        players[0].y += 2 * speedModifer;
@@ -175,13 +196,17 @@ function spawnPowerup() {
 	var i = 0;
 	var x = Math.floor(Math.random() * 50) + 75;
 	var y = Math.floor(Math.random() * 50) + 75;
+	if (mapArray[x][y] !== 1) {
+		//console.log("Working: " + x + " " + y)
+		return (x + " " + y)
+	}
 	if (mapArray[x][y] < 1) {
 		console.log("Working: " + x + " " + y)
 		mapArray[x][y] = 2;
 		i = 5
 	}
 	while(i < 5) {
-		console.log(x + " " + y)
+		//console.log(x + " " + y)
 		x = Math.floor(Math.random() * 50) + 75;
 		y = Math.floor(Math.random() * 50) + 75;
 		i++
@@ -232,7 +257,7 @@ function spawnPowerup() {
 }
 // draws the player sprite
 function draw() {
-    console.log("mouseX" + mouseX + " " + "mouseY " + mouseY);
+    //console.log("mouseX" + mouseX + " " + "mouseY " + mouseY);
 	updatePositions();
 	// repaints light bleu over everything to redraw
 	ctx.fillStyle = "#6960F5";
@@ -247,15 +272,18 @@ function draw() {
 function drawArena(x,y) {
 	var topunitx = Math.floor((x - fovwidth/2)/UNIT);
 	var topunity = Math.floor((y - fovheight/2)/UNIT);
-	console.log("x: " + x + " " + topunitx + "y: " + y + " " + topunity)
-//        console.log("UNITX" + topunitx);
-//        console.log("UNITY" + topunity);
-        
+	//console.log("x: " + x + " " + topunitx + "y: " + y + " " + topunity)
+//	console.log("UNITX" + topunitx);
+//	console.log("UNITY" + topunity);
+
 	for(var m = topunitx; m < fovwidth/UNIT + topunitx; m++) {
     	for(var n = topunity; n < fovheight/UNIT + topunity; n++) {
             if(mapArray[m][n] === 1) {
 				ctx.fillStyle = "#CCCCCC";
 				ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT); 
+			}
+			if(mapArray[m][n] === 2) {
+				ctx.fillStyle = "#FFFF00";
 			}
             if(mapArray[m][n] === 2) {
 				ctx.fillStyle = "#FFFF00";
@@ -279,7 +307,7 @@ function drawSelf() {
 	ctx.fill();	
 	ctx.closePath();
 	players[0].score += 5;
-	console.log(players[0].score);
+	//console.log(players[0].score);
 	document.getElementById("score").innerHTML = players[0].score;
 	
 }
@@ -295,13 +323,66 @@ function drawPlayers() {
 		ctx.fill();	
 		ctx.closePath();
 		players[j].score += 5;
-		console.log(players[j].score);
+		//console.log(players[j].score);
 		//document.getElementById("score").innerHTML = players[j].score;
 	}
 }
 
 // collision checker for both walls + players
 // returns true if there are any collisions
+function checkSpeedPowerup(x,y){
+	exactx = x;
+	exacty = y;
+	x = Math.floor(x/UNIT);
+	y = Math.floor(y/UNIT);
+	if(mapArray[x][y-1] === 2 && (Math.floor(exacty/UNIT) != Math.floor((exacty - radius)/UNIT))) {
+		mapArray[x][y-1] = 0;
+		return true;
+	}
+	// checks for right wall
+	else if(mapArray[x+1][y] === 2 && (Math.floor(exactx/UNIT) != Math.floor((exactx+radius)/UNIT))) {
+		mapArray[x+1][y] = 0;
+		return true;
+	}
+	// checks for bottom wall
+	else if(mapArray[x][y+1] === 2 && (Math.floor(exacty/UNIT) != Math.floor((exacty+radius)/UNIT))) {
+		mapArray[x][y+1] = 0;
+		return true;
+	}
+	// checks for left wall
+	else if(mapArray[x-1][y] === 2 && (Math.floor((exactx-radius)/UNIT) != Math.floor(exactx/UNIT))) {
+		mapArray[x-1][y] = 0;
+		return true;
+	}
+	
+	// otherwise, check for corner intersection (because this either means its
+	// not
+	// intersecting or their are only walls in the corners
+	
+	// checks for top left corner
+	else if(mapArray[x-1][y-1] === 2 && distance(exactx, x*12, exacty, x*12) < 6) {
+		mapArray[x-1][y-1] = 0;
+		return true;
+	}
+	// checks for the top right corner
+	else if(mapArray[x+1][y-1] === 2 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
+		mapArray[x+1][y-1] = 0;
+		return true;
+	}
+	// checks for the bottom right corner
+	else if(mapArray[x+1][y+1] === 2 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x+1][y+1] = 0;
+		return true;
+	}
+	// checks for the bottom left corner
+	else if(mapArray[x-1][y+1] === 2 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
+		mapArray[x-1][y+1] = 0;
+		return true;
+	}
+	else {
+		return false;
+	}
+}
 function checkCollisions(x,y) {
 	exactx = x;
 	exacty = y;
@@ -313,7 +394,7 @@ function checkCollisions(x,y) {
 		return true;
 	}
 	// checks for right wall
-	else if(mapArray[x+1][y] === 1 && (Math.floor(exactx/UNIT) != Math.floor((exactx+4)/UNIT))) {
+	else if(mapArray[x+1][y] === 1 && (Math.floor(exactx/UNIT) != Math.floor((exactx+radius)/UNIT))) {
 		return true;
 	}
 	// checks for bottom wall
@@ -461,7 +542,7 @@ function checkCollisions(x,y) {
 	
 //basic distance formula
 function distance(x1, x2, y1, y2) {
-	console.log(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
+	//console.log(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
 	return Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1));
 }
 
@@ -494,7 +575,7 @@ function drawTargeter() {
         angle = -Math.atan((300 - mouseY)/(mouseX - 600));
     }
         
-        console.log("Angle" + angle);
+        //console.log("Angle" + angle);
         var cursorX = cursorDistance * Math.cos(angle) + 600;
         var cursorY = cursorDistance * Math.sin(angle) + 300;
         var cursorX2 = 0.70 * cursorDistance * Math.cos(angle) + 600;
