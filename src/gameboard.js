@@ -163,7 +163,7 @@ function updatePositions() {
 		console.log("player x: "+players[i].x);
 		console.log("player y: "+players[i].y);
 		if(checkSpeedPowerup(players[i].x, players[i].y) == true){
-			players[i].speedModifer = 3;
+			players[i].speedModifer = 4;
 			console.log("speedModifer1: "+players[0].speedModifer);
 		}
 	}
@@ -174,20 +174,20 @@ function updatePositions() {
 	    else if(leftPressed == true && checkCollisions(players[i].x - 2 * players[i].speedModifer, players[i].y) == false) {
 	        players[0].x -= 2 * players[i].speedModifer;
 	    }
-	    if(leftPressed == true && checkCollisions(players[0].x - 2 * speedModifer, players[0].y) == false) {
-	        players[0].x -= 2 * speedModifer;
+	    if(leftPressed == true && checkCollisions(players[0].x - 2 * players[i].speedModifer, players[0].y) == false) {
+	        players[0].x -= 2 * players[i].speedModifer;
 	    }
 	    else if(upPressed == true && checkCollisions(players[i].x, players[i].y - 2 * players[i].speedModifer) == false) {
 	        players[0].y -= 2 * players[i].speedModifer;
 	    }
-	    if(upPressed == true && checkCollisions(players[0].x, players[0].y - 2 * speedModifer) == false) {
-	        players[0].y -= 2 * speedModifer;
+	    if(upPressed == true && checkCollisions(players[0].x, players[0].y - 2 * players[i].speedModifer) == false) {
+	        players[0].y -= 2 * players[i].speedModifer;
 	    }
 	    else if(downPressed == true && checkCollisions(players[i].x, players[i].y + 2 * players[i].speedModifer) == false) {
 	        players[0].y += 2 * players[i].speedModifer;
 	    }
-	    if(downPressed == true && checkCollisions(players[0].x, players[0].y + 2 * speedModifer) == false) {
-	        players[0].y += 2 * speedModifer;
+	    if(downPressed == true && checkCollisions(players[0].x, players[0].y + 2 * players[i].speedModifer) == false) {
+	        players[0].y += 2 * players[i].speedModifer;
 	    }
 	} 
 }
