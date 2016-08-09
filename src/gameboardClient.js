@@ -7,6 +7,64 @@ var downPressed = false;
 ctx.fillStyle="#736AFF";
 ctx.fillRect(0,0,fovwidth+2000,fovheight+2000);
 
+function keyDownHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = true;
+    }
+    if(e.keyCode == 37) {
+        leftPressed = true;
+    }
+    if(e.keyCode == 38) {
+    	upPressed = true;
+    }
+    if(e.keyCode == 40) {
+    	downPressed = true;
+    }
+}
+function keyUpHandler(e) {
+    if(e.keyCode == 39) {
+        rightPressed = false;
+    }
+    if(e.keyCode == 37) {
+        leftPressed = false;
+    }
+    if(e.keyCode == 38) {
+    	upPressed = false;
+    }
+    if(e.keyCode == 40) {
+    	downPressed = false;
+    }
+}
+
+var IE = document.all?true:false
+		if (!IE) document.captureEvents(Event.MOUSEMOVE)
+
+		document.onmousemove = getMouseXY;
+
+		// Temporary variables to hold mouse x-y pos.s
+		var mouseX = 0;
+		var mouseY = 0;
+		// Main function to retrieve mouse x-y pos.
+		function getMouseXY(e) {
+		  if (IE) { // grab the x-y pos.s if browser is IE
+		    mouseX = event.clientX + document.body.scrollLeft;
+		    mouseY = event.clientY + document.body.scrollTop;
+		  } else {  // grab the x-y pos.s if browser is NS
+		    mouseX = e.pageX;
+		    mouseY = e.pageY;
+		  }  
+		  // catch possible negative values in NS4
+		  if (mouseX < 0){
+		      mouseX = 0
+		  }
+		  if (mouseY < 0){
+		      mouseY = 0
+		  }  
+		  // show the position values in the form named Show
+		  // in the text fields named MouseX and MouseY
+		  return true
+		}
+
 //draws the player sprite
 function draw() {
     //console.log("mouseX" + mouseX + " " + "mouseY " + mouseY);
