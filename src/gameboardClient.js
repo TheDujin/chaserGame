@@ -7,6 +7,10 @@ var downPressed = false;
 ctx.fillStyle="#736AFF";
 ctx.fillRect(0,0,fovwidth+2000,fovheight+2000);
 
+//deals with keybaord inputs
+document.addEventListener("keydown", keyDownHandler, false);document.addEventListener("keyup", keyUpHandler, false);
+
+
 function keyDownHandler(e) {
     if(e.keyCode == 39) {
         rightPressed = true;
@@ -35,35 +39,40 @@ function keyUpHandler(e) {
     	downPressed = false;
     }
 }
+//prevents scrolling
+window.addEventListener("keydown", function(e) {
+    // space, page up, page down and arrow keys:
+    if([32, 33, 34, 37, 38, 39, 40].indexOf(e.keyCode) > -1) {
+        e.preventDefault();
+    }
+}, false);
 
 var IE = document.all?true:false
-		if (!IE) document.captureEvents(Event.MOUSEMOVE)
-
-		document.onmousemove = getMouseXY;
-
-		// Temporary variables to hold mouse x-y pos.s
-		var mouseX = 0;
-		var mouseY = 0;
-		// Main function to retrieve mouse x-y pos.
-		function getMouseXY(e) {
-		  if (IE) { // grab the x-y pos.s if browser is IE
-		    mouseX = event.clientX + document.body.scrollLeft;
-		    mouseY = event.clientY + document.body.scrollTop;
-		  } else {  // grab the x-y pos.s if browser is NS
-		    mouseX = e.pageX;
-		    mouseY = e.pageY;
-		  }  
-		  // catch possible negative values in NS4
-		  if (mouseX < 0){
-		      mouseX = 0
-		  }
-		  if (mouseY < 0){
-		      mouseY = 0
-		  }  
-		  // show the position values in the form named Show
-		  // in the text fields named MouseX and MouseY
-		  return true
-		}
+if (!IE) document.captureEvents(Event.MOUSEMOVE)
+	document.onmousemove = getMouseXY;
+	// Temporary variables to hold mouse x-y pos.s
+var mouseX = 0;
+var mouseY = 0;
+// Main function to retrieve mouse x-y pos.
+function getMouseXY(e) {
+  if (IE) { // grab the x-y pos.s if browser is IE
+    mouseX = event.clientX + document.body.scrollLeft;
+    mouseY = event.clientY + document.body.scrollTop;
+  } else {  // grab the x-y pos.s if browser is NS
+    mouseX = e.pageX;
+    mouseY = e.pageY;
+  }  
+  // catch possible negative values in NS4
+  if (mouseX < 0){
+      mouseX = 0
+  }
+  if (mouseY < 0){
+      mouseY = 0
+  }  
+  // show the position values in the form named Show
+  // in the text fields named MouseX and MouseY
+  return true
+}
 
 //draws the player sprite
 function draw() {
