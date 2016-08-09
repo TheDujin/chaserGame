@@ -7,6 +7,7 @@ var counter = 0;
 
 var radius = 10;
 var players = [];
+var bullets = [];
 var HEIGHT = 9000;
 var WIDTH = 9000;
 var XUNITS = 300;

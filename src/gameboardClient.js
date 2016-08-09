@@ -149,7 +149,15 @@ function drawPlayers() {
 		//document.getElementById("score").innerHTML = players[j].score;
 	}
 }
-
+document.onmousedown = function(){
+	if (players[0].ammo > 0) {
+		players[0].ammo--
+		bullets[0] = new bullet(players[0].ID);
+	}
+}
+function drawBullets() {
+	
+}
 function drawTargeter() {
     //angle in radians
     var cursorDistance = 50;
