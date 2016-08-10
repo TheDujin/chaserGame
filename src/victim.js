@@ -8,7 +8,9 @@ function victim(ID) {
 	this.y = 2130;
 	this.score = 0;
     this.radius = 15
-    this.speedModifer = 2;
+    this.speedModifer = 1;
     this.ammo = 0;
-    this.color = "#00FF00"
+    this.color = "#00FF00";
+    this.invisCounter = 0;
+    this.speedCounter = 0;
 }

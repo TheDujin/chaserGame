@@ -8,6 +8,9 @@ ctx.fillStyle="#736AFF";
 ctx.fillRect(0,0,fovwidth,fovheight);
 var mouseX = 0;
 var mouseY = 0;
+var bullets = [];
+var selfx = players[0].x
+var selfy = players[0].y
 
 //deals with keyboard inputs
 document.addEventListener("keydown", keyDownHandler, false);document.addEventListener("keyup", keyUpHandler, false);
@@ -76,7 +79,8 @@ function getMouseXY(e) {
 document.onmousedown = function(){
 	if (players[0].ammo > 0) {
 		players[0].ammo--
-		bullets[0] = new bullet(players[0].ID);
+		var newbullet = new bullet(players[0].ID);
+		bullets.push(newbullet)
 	}
 }
 
@@ -88,9 +92,12 @@ function draw() {
 	ctx.fillStyle = "#6960F5";
 	ctx.fillRect(0,0,1200,600);
 	drawArena(players[0].x,players[0].y);
-  drawTargeter();
+	drawTargeter();
 	// repaints player locations
 	drawSelf();
+	drawBullets(players[0].x, players[0].y);
+	selfx = players[0].x
+	selfy = players[0].y
 }
 
 //draws the arena
@@ -156,8 +163,15 @@ function drawPlayers() {
 	}
 }
 
-function drawBullets() {
-
+function drawBullets(x, y) {
+	for (var i = 0; i < bullets.length; i++) {
+		ctx.beginPath()
+		ctx.arc(bullets[i].x - selfx + fovwidth/2, bullets[i].y - selfy + fovheight/2, 4, 0, 2 * Math.PI)
+		ctx.fillStyle = bullets[i].color
+		ctx.fill()
+		ctx.closePath()
+		console.log(bullets[i].x + " " + bullets[i].y)
+	}
 }
 function drawTargeter() {
     //angle in radians
@@ -185,4 +199,4 @@ function drawTargeter() {
     ctx.fill();
     ctx.closePath();
 }
-setInterval(draw, 10);
+setInterval(draw, 5);

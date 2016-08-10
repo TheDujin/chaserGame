@@ -41,7 +41,7 @@ function updatePositions() {
 	//	console.log("baboon");
 	//	console.log("speedModifer: "+players[0].speedModifer);
 		if(checkSpeedPowerup(players[i].x, players[i].y) == true){
-			players[i].speedModifer = 4;
+			players[i].speedModifer = 2;
 	//		console.log("speedModifer1: "+players[0].speedModifer);
 		}
 		if(checkInvisPowerup(players[i].x, players[i].y) == true){
@@ -66,6 +66,21 @@ function updatePositions() {
 	    if(downPressed == true && checkWallCollisions(players[i].x, players[i].y + 2 * players[i].speedModifer) == false) {
 	        players[0].y += 2 * players[i].speedModifer;
 	    }
+	}
+	for (var i = 0; i < bullets.length; i++) {
+		switch (checkBulletCollisions(bullets[i].x, bullets[i].y)){
+		case 1:
+			bullets[i].dy = -bullets[i].dy;
+			break;
+		case 2:
+			bullets[i].dx = -bullets[i].dx;
+			break;
+		case 3:
+			bullets[i].dx = -bullets[i].dx;
+			bulelts[i].dy = -bullets[i].dy;
+		}
+		bullets[i].x += bullets[i].dx;
+		bullets[i].y += bullets[i].dy;
 	}
 }
 
@@ -328,6 +343,55 @@ function checkWallCollisions(x,y) {
 	// checks for the bottom left corner
 	else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
 		return true;
+	}
+
+	else {
+		return false;
+	}
+}
+
+function checkBulletCollisions(x,y) {
+	exactx = x;
+	exacty = y;
+	x = Math.floor(x/UNIT);
+	y = Math.floor(y/UNIT);
+	// checks for top wall
+	// arena array is the array of 1's and 0's that the map is based on
+	if(mapArray[x][y-1] === 1 && (Math.floor(exacty/UNIT) != Math.floor((exacty - bullets[0].radius)/UNIT))) {
+		return 1;
+	}
+	// checks for right wall
+	else if(mapArray[x+1][y] === 1 && (Math.floor(exactx/UNIT) != Math.floor((exactx+bullets[0].radius)/UNIT))) {
+		return 2;
+	}
+	// checks for bottom wall
+	else if(mapArray[x][y+1] === 1 && (Math.floor(exacty/UNIT) != Math.floor((exacty+bullets[0].radius)/UNIT))) {
+		return 1;
+	}
+	// checks for left wall
+	else if(mapArray[x-1][y] === 1 && (Math.floor((exactx-bullets[0].radius)/UNIT) != Math.floor(exactx/UNIT))) {
+		return 2;
+	}
+
+	// otherwise, check for corner intersection (because this either means its
+	// not
+	// intersecting or their are only walls in the corners
+
+	// checks for top left corner
+	else if(mapArray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 6) {
+		return 3;
+	}
+	// checks for the top right corner
+	else if(mapArray[x+1][y-1] === 1 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
+		return 3;
+	}
+	// checks for the bottom right corner
+	else if(mapArray[x+1][y+1] === 1 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
+		return 3;
+	}
+	// checks for the bottom left corner
+	else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
+		return 3;
 	}
 
 	else {
