@@ -108,8 +108,8 @@ function drawArena(x,y) {
 	//console.log("x: " + x + " " + topunitx + "y: " + y + " " + topunity)
 //	console.log("UNITX" + topunitx);
 //	console.log("UNITY" + topunity);
-	for(var m = topunitx; m < fovwidth/UNIT + topunitx; m++) {
-    	for(var n = topunity; n < fovheight/UNIT + topunity; n++) {
+	for(var m = topunitx; m < fovwidth/UNIT + topunitx + 1; m++) {
+    	for(var n = topunity; n < fovheight/UNIT + topunity + 1; n++) {
       var value = mapArray[m][n];
       if(value !== 0) {
         switch(value) {
@@ -128,7 +128,7 @@ function drawArena(x,y) {
           default:
             break;
           }
-          ctx.fillRect((Math.ceil(x/UNIT)*UNIT - x) + (m - topunitx - 1)*UNIT, (Math.ceil(y/UNIT)*UNIT - y) + (n - topunity - 1)*UNIT, UNIT, UNIT);
+          ctx.fillRect((Math.floor(x/UNIT)*UNIT - x) + (m - topunitx)*UNIT, (Math.floor(y/UNIT)*UNIT - y) + (n - topunity)*UNIT, UNIT, UNIT);
         }
 		}
 	}

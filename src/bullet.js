@@ -1,4 +1,4 @@
-function bullet(ID, dx, dy, x, y) {
+function bullet(ID) {
 	this.ID = ID;
     this.speedModifer = 2;
 	var angle = 0;
@@ -16,3 +16,5 @@ function bullet(ID, dx, dy, x, y) {
     this.color = "#FF0000";
     this.lifeCounter = 0;
 }
+
+
