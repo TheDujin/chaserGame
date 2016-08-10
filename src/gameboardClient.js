@@ -170,7 +170,6 @@ function drawBullets(x, y) {
 		ctx.fillStyle = bullets[i].color
 		ctx.fill()
 		ctx.closePath()
-		console.log(bullets[i].x + " " + bullets[i].y)
 	}
 }
 function drawTargeter() {

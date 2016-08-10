@@ -32,8 +32,8 @@ function updatePositions() {
 
 	//spawns a powerup every 15 seconds (1500 cycles)
 	counter++;
-	if (counter >= 50) {
-		counter -= 50;
+	if (counter >= 100) {
+		counter -= 100;
 		spawnPowerup();
 	}
 //	console.log("speedModifer: "+players[0].speedModifer);
@@ -42,15 +42,31 @@ function updatePositions() {
 	//	console.log("speedModifer: "+players[0].speedModifer);
 		if(checkSpeedPowerup(players[i].x, players[i].y) == true){
 			players[i].speedModifer = 2;
+			players[i].speedCounter = 0;
 	//		console.log("speedModifer1: "+players[0].speedModifer);
 		}
 		if(checkInvisPowerup(players[i].x, players[i].y) == true){
 			players[i].color = "#6257f4";
+			players[i].invisCounter = 0;
 	//		console.log("speedModifer1: "+players[0].speedModifer);
 		}
 		if(checkAmmoPowerup(players[i].x, players[i].y) == true){
 			players[i].ammo++;
 	//		console.log("speedModifer1: "+players[0].speedModifer);
+		}
+		if (players[i].speedModifer == 2) {
+			players[i].speedCounter++
+			if (players[i].speedCounter == 1000) {
+				players[i].speedModifer = 1;
+				players[i].speedCounter = 0;
+			}
+		}
+		if (players[i].color == "#6257f4") {
+			players[i].invisCounter++
+			if (players[i].invisCounter == 1000) {
+				players[i].color = "#00FF00";
+				players[i].invisCounter = 0;
+			}
 		}
 	}
 	for(var i = 0; i < players.length; i++) {
@@ -68,6 +84,10 @@ function updatePositions() {
 	    }
 	}
 	for (var i = 0; i < bullets.length; i++) {
+		bullets[i].lifeCounter++;
+		if (bullets[i].lifeCounter === 2000) {
+			bullets.shift()
+		}
 		switch (checkBulletCollisions(bullets[i].x, bullets[i].y)){
 		case 1:
 			bullets[i].dy = -bullets[i].dy;
@@ -380,18 +400,22 @@ function checkBulletCollisions(x,y) {
 	// checks for top left corner
 	else if(mapArray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 6) {
 		return 3;
+		console.log("Discworld")
 	}
 	// checks for the top right corner
 	else if(mapArray[x+1][y-1] === 1 && distance(exactx, (x+1)*12, exacty, (y)*12) < 6) {
 		return 3;
+		console.log("Discworld")
 	}
 	// checks for the bottom right corner
 	else if(mapArray[x+1][y+1] === 1 && distance(exactx, (x+1)*12, exacty, (y+1)*12) < 6) {
 		return 3;
+		console.log("Discworld")
 	}
 	// checks for the bottom left corner
 	else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
 		return 3;
+		console.log("Discworld")
 	}
 
 	else {
