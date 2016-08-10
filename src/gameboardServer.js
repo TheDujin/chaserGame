@@ -18,51 +18,39 @@ var UNIT = 30;
 var fovwidth = 1200;
 var fovheight = 600;
 
-
-
 var victim1 = new victim();
 victim1.ID = 1234;
 players[0] = victim1;
 
-
-
-	
-
-//mouse tracker
-
-
-// obtain keycodes
-// 0 is up, 1 is right, 2 is down, 3 is left
-// finish coding. s
 function updatePositions() {
 //	console.log(checkWallCollisions(players[0].x + 50, players[0].y));
 //	console.log(checkWallCollisions(players[0].x - 50, players[0].y));
 //	console.log(checkWallCollisions(players[0].x, players[0].y  + 50));
 //	console.log(checkWallCollisions(players[0].x, players[0].y  -50));
 //	console.log(checkWallCollisions(players[0].x, players[0].y - 2));
-//        console.log("player X: " + players[0].x + "Y: " + players[0].y);
-	
+//  console.log("player X: " + players[0].x + "Y: " + players[0].y);
+
 	//spawns a powerup every 15 seconds (1500 cycles)
 	counter++;
 	if (counter >= 50) {
-		counter -= 50
-		spawnPowerup()
+		counter -= 50;
+		spawnPowerup();
 	}
-	console.log("speedModifer: "+players[0].speedModifer);
+//	console.log("speedModifer: "+players[0].speedModifer);
 	for(var i = 0; i < players.length; i++){
-		console.log("baboon");
-		console.log("speedModifer: "+players[0].speedModifer);
+	//	console.log("baboon");
+	//	console.log("speedModifer: "+players[0].speedModifer);
 		if(checkSpeedPowerup(players[i].x, players[i].y) == true){
 			players[i].speedModifer = 4;
-			console.log("speedModifer1: "+players[0].speedModifer);
+	//		console.log("speedModifer1: "+players[0].speedModifer);
 		}
 		if(checkInvisPowerup(players[i].x, players[i].y) == true){
 			players[i].color = "#6257f4";
-			console.log("speedModifer1: "+players[0].speedModifer);
+	//		console.log("speedModifer1: "+players[0].speedModifer);
 		}
 		if(checkAmmoPowerup(players[i].x, players[i].y) == true){
 			players[i].ammo++;
-			console.log("speedModifer1: "+players[0].speedModifer);
+	//		console.log("speedModifer1: "+players[0].speedModifer);
 		}
 	}
 	for(var i = 0; i < players.length; i++) {
@@ -78,16 +66,15 @@ function updatePositions() {
 	    if(downPressed == true && checkWallCollisions(players[i].x, players[i].y + 2 * players[i].speedModifer) == false) {
 	        players[0].y += 2 * players[i].speedModifer;
 	    }
-	} 
+	}
 }
 
 function spawnPowerup() {
 	var i = 0;
 	var x = Math.floor(Math.random() * 50) + 75;
 	var y = Math.floor(Math.random() * 50) + 75;
-	
+
 	if (mapArray[x][y] < 1) {
-		console.log("Working: " + x + " " + y)
 		mapArray[x][y] = 2;
 		i = 5
 	}
@@ -97,7 +84,6 @@ function spawnPowerup() {
 		y = Math.floor(Math.random() * 50) + 75;
 		i++
 		if (mapArray[x][y] < 1) {
-			console.log("Working: " + x + " " + y)
 			mapArray[x][y] = 2;
 			i = 5
 		}
@@ -106,17 +92,14 @@ function spawnPowerup() {
 	x = Math.floor(Math.random() * 50) + 75;
 	y = Math.floor(Math.random() * 50) + 75;
 	if (mapArray[x][y] < 1) {
-		console.log("Working: " + x + " " + y)
 		mapArray[x][y] = 3;
 		i = 5
 	}
 	while(i < 5) {
-		console.log(x + " " + y)
 		x = Math.floor(Math.random() * 50) + 75;
 		y = Math.floor(Math.random() * 50) + 75;
 		i++
 		if (mapArray[x][y] < 1) {
-			console.log("Working: " + x + " " + y)
 			mapArray[x][y] = 3;
 			i = 5
 		}
@@ -125,27 +108,19 @@ function spawnPowerup() {
 	x = Math.floor(Math.random() * 50) + 75;
 	y = Math.floor(Math.random() * 50) + 75;
 	if (mapArray[x][y] < 1) {
-		console.log("Working: " + x + " " + y)
 		mapArray[x][y] = 4;
 		i = 5
 	}
 	while(i < 5) {
-		console.log(x + " " + y)
 		x = Math.floor(Math.random() * 50) + 75;
 		y = Math.floor(Math.random() * 50) + 75;
 		i++
 		if (mapArray[x][y] < 1) {
-			console.log("Working: " + x + " " + y)
 			mapArray[x][y] = 4;
 			i = 5
 		}
 	}
 }
-
-
-
-
-
 
 // collision checker for both walls + players
 // returns true if there are any collisions
@@ -173,11 +148,11 @@ function checkSpeedPowerup(x,y){
 		mapArray[x-1][y] = 0;
 		return true;
 	}
-	
+
 	// otherwise, check for corner intersection (because this either means its
 	// not
 	// intersecting or their are only walls in the corners
-	
+
 	// checks for top left corner
 	else if(mapArray[x-1][y-1] === 2 && distance(exactx, x*12, exacty, x*12) < 6) {
 		mapArray[x-1][y-1] = 0;
@@ -227,11 +202,11 @@ function checkInvisPowerup(x,y){
 		mapArray[x-1][y] = 0;
 		return true;
 	}
-	
+
 	// otherwise, check for corner intersection (because this either means its
 	// not
 	// intersecting or their are only walls in the corners
-	
+
 	// checks for top left corner
 	else if(mapArray[x-1][y-1] === 3 && distance(exactx, x*12, exacty, x*12) < 6) {
 		mapArray[x-1][y-1] = 0;
@@ -281,11 +256,11 @@ function checkAmmoPowerup(x,y){
 		mapArray[x-1][y] = 0;
 		return true;
 	}
-	
+
 	// otherwise, check for corner intersection (because this either means its
 	// not
 	// intersecting or their are only walls in the corners
-	
+
 	// checks for top left corner
 	else if(mapArray[x-1][y-1] === 4 && distance(exactx, x*12, exacty, x*12) < 6) {
 		mapArray[x-1][y-1] = 0;
@@ -333,11 +308,11 @@ function checkWallCollisions(x,y) {
 	else if(mapArray[x-1][y] === 1 && (Math.floor((exactx-radius)/UNIT) != Math.floor(exactx/UNIT))) {
 		return true;
 	}
-	
+
 	// otherwise, check for corner intersection (because this either means its
 	// not
 	// intersecting or their are only walls in the corners
-	
+
 	// checks for top left corner
 	else if(mapArray[x-1][y-1] === 1 && distance(exactx, x*12, exacty, x*12) < 6) {
 		return true;
@@ -354,12 +329,12 @@ function checkWallCollisions(x,y) {
 	else if(mapArray[x-1][y+1] === 1 && distance(exactx, (x)*12, exacty, (y+1)*12) < 6) {
 		return true;
 	}
-	
+
 	else {
 		return false;
 	}
 }
-	
+
 //basic distance formula
 function distance(x1, x2, y1, y2) {
 	//console.log(Math.sqrt((x2 - x1) * (x2 - x1) + (y2 - y1) * (y2 - y1)));
@@ -369,51 +344,9 @@ function distance(x1, x2, y1, y2) {
 // freezes for n milliseconds? Bad???
 function sleep(milliseconds) {
 	  var start = new Date().getTime();
-	  for (var i = 0; i < 1e7; i++) { 
+	  for (var i = 0; i < 1e7; i++) {
 	    if ((new Date().getTime() - start) > milliseconds){
 	      break;
-	    }f
+	    }
 	  }
 	}
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
