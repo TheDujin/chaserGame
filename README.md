@@ -17,6 +17,11 @@ The Chaser Game is a simple, LAN-based multiplayer game. It is designed to follo
  - Bullets will travel at double the speed of a non-Speed-buffed player and will bounce off walls for their lifetime of 10 seconds.
 
  ---
+ 
+ ## How to download
+ Download and unzip this repository. All components necessary for running this code  (in singleplayer) should be available.
+ 
+ ---
 
 ## Project Motivation
 This project was created solely three high-school students at the Northwest Advanced Programming Workshop.
